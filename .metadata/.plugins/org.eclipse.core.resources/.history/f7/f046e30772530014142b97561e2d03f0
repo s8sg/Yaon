@@ -146,7 +146,7 @@ public class FlowManager implements InternalModule{
         }
         */
 		
-		/*** Added as other drops flow is not being added ***/
+		/*** Added as other drops flow is not being added */
 		/* Create drop_switch_any Flow */
 		drop_switch_any = new Flow();
 		/* Generate flow name */
@@ -404,7 +404,6 @@ public class FlowManager implements InternalModule{
 		/* Create Match */
 		match = new Match();
 		match.setField(new MatchField(MatchType.IN_PORT, port));
-		/*** TODO: mac is not being added in the flow */
 		//match.setField(new MatchField(MatchType.DL_SRC, OdlUtil.generateBytesForMac(MAC)));
 		/* Create actions */
 		actions = new ArrayList<Action>();

@@ -847,3 +847,43 @@ Classpath: Jar:switchmanager,Jar:clustering.services,Jar:configuration,Jar:jcl-o
 2014-10-14 11:47:25,332 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2014-10-14 11:47:25,332 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaonCFENorthbound\src\test\resources
 2014-10-14 11:47:25,534 [Worker-0] WARN  o.e.m.c.i.embedder.EclipseLogger - Manifest org.opendaylight.controller:yaon.CFENorthbound:bundle:1.0-SNAPSHOT : Unused Private-Package instructions, no such package(s) on the class path: [!*]
+2014-10-14 12:46:02,562 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang added.
+2014-10-14 12:46:02,563 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-config added.
+2014-10-14 12:46:02,563 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-sal added.
+2014-10-14 12:46:02,563 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\xtend-gen added.
+2014-10-14 12:46:02,564 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:02,564 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\main\resources
+2014-10-14 12:46:02,565 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:02,565 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\test\resources
+2014-10-14 12:46:03,736 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaonCFE\src\main\yang added.
+2014-10-14 12:46:03,736 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaonCFE\src\main\yang-gen-config added.
+2014-10-14 12:46:03,736 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaonCFE\src\main\yang-gen-sal added.
+2014-10-14 12:46:03,736 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaonCFE\src\main\xtend-gen added.
+2014-10-14 12:46:03,737 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:03,738 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaonCFE\src\main\resources
+2014-10-14 12:46:03,738 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:03,739 [Worker-17] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaonCFE\src\test\resources
+2014-10-14 12:46:31,722 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang added.
+2014-10-14 12:46:31,723 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-config added.
+2014-10-14 12:46:31,723 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-sal added.
+2014-10-14 12:46:31,723 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\xtend-gen added.
+2014-10-14 12:46:31,724 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:31,724 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\main\resources
+2014-10-14 12:46:31,725 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:31,725 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\test\resources
+2014-10-14 12:46:35,368 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang added.
+2014-10-14 12:46:35,368 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-config added.
+2014-10-14 12:46:35,368 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-sal added.
+2014-10-14 12:46:35,368 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\xtend-gen added.
+2014-10-14 12:46:35,370 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:35,370 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\main\resources
+2014-10-14 12:46:35,371 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:46:35,371 [Worker-21] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\test\resources
+2014-10-14 12:49:16,966 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang added.
+2014-10-14 12:49:16,966 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-config added.
+2014-10-14 12:49:16,966 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\yang-gen-sal added.
+2014-10-14 12:49:16,966 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Source directory: D:\controller\opendaylight\Yaon\yaon\src\main\xtend-gen added.
+2014-10-14 12:49:16,968 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:49:16,968 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\main\resources
+2014-10-14 12:49:16,968 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2014-10-14 12:49:16,969 [Worker-24] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\controller\opendaylight\Yaon\yaon\src\test\resources
