@@ -1,28 +1,29 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1413268185458
+Bnd-LastModified: 1413276957023
 Build-Jdk: 1.7.0_60
 Built-By: SDN-ODL
 Bundle-ManifestVersion: 2
-Bundle-Name: yaon.CFENorthbound
-Bundle-SymbolicName: org.opendaylight.controller.yaon.CFENorthbound
-Bundle-Version: 1.0.0.SNAPSHOT
+Bundle-Name: cosanti.yaonCFENorthbound
+Bundle-SymbolicName: org.opendaylight.controller.cosanti.yaonCFENorthbou
+ nd
+Bundle-Version: 1.0.0
 Created-By: Apache Maven Bundle Plugin
 Export-Package: org.opendaylight.controller.yaon.yaonCFENorthbound;versi
  on="1.0.0.SNAPSHOT";uses:="javax.ws.rs,javax.ws.rs.core"
 Import-Package: org.opendaylight.controller.yaon.yaonCFE;version="[0.5,1
  )",org.opendaylight.controller.sal.utils;version="[0.9,1)",javax.ws.rs;
  version="[1.1,2)",javax.ws.rs.core;version="[1.1,2)",org.json.simple.pa
- rser;version="[1.1,2)",org.json.simple;version="[1.1,2)",org.slf4j;vers
- ion="[1.7,2)",javax.xml.bind,org.opendaylight.controller.sal.packet.add
- ress;version="[0.9,1)",com.fasterxml.jackson.jaxrs.base;version="[2.3,3
- )",com.sun.jersey.spi.container.servlet;version="[1.17,2)",org.opendayl
+ rser;version="[1.1,2)",org.json.simple;version="[1.1,2)",org.apache.com
+ mons.logging,com.fasterxml.jackson.jaxrs.json;version="[2.3,3)",org.ope
+ ndaylight.controller.northbound.commons.utils;version="[0.4,1)",org.ope
+ ndaylight.controller.sal.authorization;version="[0.9,1)",org.slf4j;vers
+ ion="[1.7,2)",org.opendaylight.controller.sal.packet.address;version="[
+ 0.9,1)",com.fasterxml.jackson.jaxrs.base;version="[2.3,3)",org.opendayl
  ight.yang.gen.v1.urn.ietf.params.xml.ns.yang.ietf.inet.types.rev100924,
- org.opendaylight.controller.northbound.commons;version="[0.4,1)",javax.
- xml.bind.annotation,org.apache.commons.logging,org.opendaylight.control
- ler.northbound.commons.exception;version="[0.4,1)",org.opendaylight.con
- troller.sal.authorization;version="[0.9,1)",org.apache.catalina.filters
- ;version="[7.0,8)",org.opendaylight.controller.northbound.commons.utils
- ;version="[0.4,1)",com.fasterxml.jackson.jaxrs.json;version="[2.3,3)"
+ com.sun.jersey.spi.container.servlet;version="[1.17,2)",javax.xml.bind.
+ annotation,org.apache.catalina.filters;version="[7.0,8)",org.opendaylig
+ ht.controller.northbound.commons;version="[0.4,1)",javax.xml.bind,org.o
+ pendaylight.controller.northbound.commons.exception;version="[0.4,1)"
 Originally-Created-By: Apache Maven Bundle Plugin
 Tool: Bnd-2.1.0.20130426-122213
 Web-ContextPath: /Yaon

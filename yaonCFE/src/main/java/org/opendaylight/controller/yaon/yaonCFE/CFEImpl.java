@@ -10,7 +10,7 @@ public class CFEImpl implements YaonCFEApi{
             .getLogger(CFEImpl.class);
 
 	/* External services */
-	private IYaonService yaonService = null;
+	static private IYaonService yaonService = null;
 
 
 	/* Default Constructor */

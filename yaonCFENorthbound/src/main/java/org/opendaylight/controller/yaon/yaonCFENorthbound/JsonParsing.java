@@ -10,11 +10,11 @@ class JsonParsing{
 
                 JSONObject jsonObject=null;
                 try{
-                JSONParser jsonParser = new JSONParser();
-                jsonObject = (JSONObject) jsonParser.parse(str.toString());
+                	JSONParser jsonParser = new JSONParser();
+                	jsonObject = (JSONObject) jsonParser.parse(str.toString());
                 }
                 catch(Exception e){
-                System.out.println("Exception occurred during Json Parsing!! "+e);
+                	System.out.println("Exception occurred during Json Parsing!! "+e);
                 }
                 return jsonObject;
         }

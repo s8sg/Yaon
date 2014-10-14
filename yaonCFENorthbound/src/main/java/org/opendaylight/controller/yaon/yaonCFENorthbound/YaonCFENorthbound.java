@@ -28,10 +28,11 @@ public class YaonCFENorthbound {
     @StatusCodes({
         @ResponseCode(code = 200, condition = "Destination reachable"),
         @ResponseCode(code = 503, condition = "Internal error"),
-        @ResponseCode(code = 503, condition = "Destination unreachable") })
+        @ResponseCode(code = 503, condition = "Destination unreachable") 
+    })
 
-        public Response registerAgent(InputStream incomingData,@PathParam(value = "dpId") String dpId) {
-
+    public Response registerAgent(InputStream incomingData,@PathParam(value = "dpId") String dpId) {
+    	
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         String uri=null;
         StringBuilder str = new StringBuilder();
@@ -58,12 +59,12 @@ public class YaonCFENorthbound {
         // return HTTP response 200 in case of success
 
        if(ping.registerAgent(dpId,uri)){
-          return Response.ok(new String("reachable")).build();
-        } else {
+    	   return Response.ok(new String("reachable")).build();
+       } else {
             System.out.println("register agent failed ");
-        }
+       }
 
-        return Response.status(200).entity(str.toString()).build();
+       return Response.status(200).entity(str.toString()).build();
     }
 
 
@@ -73,9 +74,10 @@ public class YaonCFENorthbound {
     @StatusCodes({
         @ResponseCode(code = 200, condition = "Destination reachable"),
         @ResponseCode(code = 503, condition = "Internal error"),
-        @ResponseCode(code = 503, condition = "Destination unreachable") })
+        @ResponseCode(code = 503, condition = "Destination unreachable") 
+    })
 
-        public Response registerMulticast(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
+    public Response registerMulticast(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
 
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         String multicast=null;
@@ -88,7 +90,7 @@ public class YaonCFENorthbound {
                 }
         }
         catch(Exception e){
-        System.out.println("Exception occurred during reading data"+e);
+        	System.out.println("Exception occurred during reading data"+e);
         }
         JSONObject jsonObject = JsonParsing.Data(str);
         multicast=(String) jsonObject.get("multicast");
@@ -117,12 +119,13 @@ public class YaonCFENorthbound {
     @StatusCodes({
         @ResponseCode(code = 200, condition = "Destination reachable"),
         @ResponseCode(code = 503, condition = "Internal error"),
-        @ResponseCode(code = 503, condition = "Destination unreachable") })
+        @ResponseCode(code = 503, condition = "Destination unreachable") 
+    })
 
-        public Response addSlice(InputStream incomingData) {
+    public Response addSlice(InputStream incomingData) {
 
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
-	 String sliceId=null;
+        String sliceId=null;
         String des=null;
         StringBuilder str = new StringBuilder();
         try{
@@ -133,7 +136,7 @@ public class YaonCFENorthbound {
                 }
         }
         catch(Exception e){
-        System.out.println("Exception occurred during reading data"+e);
+        	System.out.println("Exception occurred during reading data"+e);
         }
         JSONObject jsonObject = JsonParsing.Data(str);
         sliceId=String.valueOf((Long) jsonObject.get("id"));
@@ -142,74 +145,75 @@ public class YaonCFENorthbound {
 
        System.out.println("Data Received: " +"sliceId="+sliceId+" Description="+des);
 
-	 if (ping == null) {
+       if (ping == null) {
            System.out.println("ping is null");
-        }
+       }
 
         // return HTTP response 200 in case of success
 
        if(ping.addSlice(sliceId,des)){
           return Response.ok(new String("reachable")).build();
-        } else {
+       } else {
             System.out.println("add slice failed ");
-        }
+       }
 
-        return Response.status(200).entity(str.toString()).build();
-    }
+       return Response.status(200).entity(str.toString()).build();
+  }
 
 
 
-        @Path("/{sliceId}/Ports")
-        @POST
-        @StatusCodes({
+   @Path("/{sliceId}/Ports")
+   @POST
+   @StatusCodes({
                 @ResponseCode(code = 200, condition = "Destination reachable"),
                 @ResponseCode(code = 503, condition = "Internal error"),
-                @ResponseCode(code = 503, condition = "Destination unreachable") })
+                @ResponseCode(code = 503, condition = "Destination unreachable") 
+   })
 
-        public Response addPort(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
+   public Response addPort(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
 
-        YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
-        String portId=null;
-        String desc=null;
-        String dpId=null;
-        String portName=null;
-        String vlan=null;
-        StringBuilder str = new StringBuilder();
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                str.append(line);
-            }
-        }
-        catch (Exception e) {
-            System.out.println("Exception occurred during reading data"+e);
-        }
-
-            JSONObject jsonObject = JsonParsing.Data(str);
-            portId=String.valueOf((Long) jsonObject.get("id"));
-            dpId=(String) jsonObject.get("datapath_id");
-            portName=(String) jsonObject.get("name");
-            vlan=String.valueOf((Long) jsonObject.get("vid"));
-            desc=(String) jsonObject.get("description");
-
-
-         System.out.println("Data Received: " +"sliceId="+sliceId+"||Port ID="+portId+"|| DataPath Id="+dpId+"|| Port Name= "+portName+"||vlan="+vlan+"||Description="+desc);
-
-	 if (ping == null) {
-           System.out.println("ping is null");
-        }
-
-        // return HTTP response 200 in case of success
-
-       if(ping.addPort(sliceId,portId,dpId,portName,vlan,desc)){
-          return Response.ok(new String("reachable")).build();
-        } else {
-            System.out.println("add port failed ");
-        }
-
-        return Response.status(200).entity(str.toString()).build();
-  }
+	   YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+	   String portId=null;
+	   String desc=null;
+	   String dpId=null;
+	   String portName=null;
+	   String vlan=null;
+	   StringBuilder str = new StringBuilder();
+	   try {
+	       BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+	       String line = null;
+	       while ((line = in.readLine()) != null) {
+	           str.append(line);
+	       }
+	   }
+	   catch (Exception e) {
+	       System.out.println("Exception occurred during reading data"+e);
+	   }
+	
+	   JSONObject jsonObject = JsonParsing.Data(str);
+	   portId = String.valueOf((Long) jsonObject.get("id"));
+	   dpId = (String) jsonObject.get("datapath_id");
+	   portName = (String) jsonObject.get("name");
+	   vlan = String.valueOf((Long) jsonObject.get("vid"));
+	   desc = (String) jsonObject.get("description");
+		
+	   System.out.println("Data Received: " +"sliceId="+sliceId+"||Port ID="+portId+"|| DataPath Id="+dpId+"|| Port Name= "+portName+"||vlan="+vlan+"||Description="+desc);
+	
+	   if (ping == null) {
+	       System.out.println("ping is null");
+	   }
+	
+	   // return HTTP response 200 in case of success
+	
+	   if(ping.addPort(sliceId,portId,dpId,portName,vlan,desc)){
+	      	return Response.ok(new String("Port added !")).build();
+	   } else {
+	        System.out.println("add port failed ");
+	        return Response.ok(new String("Port could not be added !")).build();
+	   }
+	
+	   return Response.status(200).entity(str.toString()).build();
+    }
 
     @Path("/{sliceId}/Ports/{portId}/MAC")
     @POST
@@ -218,7 +222,7 @@ public class YaonCFENorthbound {
         @ResponseCode(code = 503, condition = "Internal error"),
         @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-        public Response addMac(InputStream incomingData,@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
+    public Response addMac(InputStream incomingData,@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
 
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         String mac=null;
@@ -250,11 +254,11 @@ public class YaonCFENorthbound {
           return Response.ok(new String("reachable")).build();
         } else {
             System.out.println("add mac failed ");
- }
+        }
 
 
         return Response.status(200).entity(str.toString()).build();
- }
+    }
 
 
 
@@ -292,7 +296,7 @@ public class YaonCFENorthbound {
         @ResponseCode(code = 503, condition = "Internal error"),
         @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-        public Response deletePort(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
+    public Response deletePort(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
 
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 
@@ -304,7 +308,7 @@ public class YaonCFENorthbound {
 
        if(ping.deletePort(sliceId,portId)){
           return Response.ok(new String("reachable")).build();
- } else {
+       } else {
             System.out.println("slice deletion failed ");
         }
 
@@ -319,7 +323,7 @@ public class YaonCFENorthbound {
         @ResponseCode(code = 503, condition = "Internal error"),
         @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-        public Response deleteMac(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId,@PathParam(value = "MAC") String MAC) {
+   public Response deleteMac(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId,@PathParam(value = "MAC") String MAC) {
 
         YaonCFEApi ping = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 
@@ -329,8 +333,8 @@ public class YaonCFENorthbound {
 
         // return HTTP response 200 in case of success
 
-       if(ping.deleteMac(sliceId,portId,MAC)){
-          return Response.ok(new String("reachable")).build();
+        if(ping.deleteMac(sliceId,portId,MAC)){
+             return Response.ok(new String("reachable")).build();
         } else {
             System.out.println("slice deletion failed ");
         }
