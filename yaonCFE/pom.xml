@@ -10,7 +10,7 @@
 
 
   <groupId>org.opendaylight.controller</groupId>
-  <artifactId>cosanti.CFE</artifactId>
+  <artifactId>cosanti.yaonCFE</artifactId>
   <version>0.5.0</version>
   <packaging>bundle</packaging>
 

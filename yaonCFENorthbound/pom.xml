@@ -9,7 +9,7 @@
     <version>1.5.0-SNAPSHOT</version>
     <relativePath>../../commons/opendaylight</relativePath>
   </parent>
-  <artifactId>yaon.CFENorthbound</artifactId>
+  <artifactId>cosanti.yaonCFENorthbound</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
