@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1413194401103
+Bnd-LastModified: 1413267438638
 Build-Jdk: 1.7.0_60
 Built-By: SDN-ODL
 Bundle-Activator: org.opendaylight.controller.yaon.internal.Activator
@@ -9,14 +9,12 @@ Bundle-SymbolicName: org.opendaylight.controller.cosanti.yaon
 Bundle-Version: 0.5.0
 Created-By: Apache Maven Bundle Plugin
 Export-Package: org.opendaylight.controller.yaon.internal;uses:="org.ope
- ndaylight.controller.statisticsmanager,org.apache.felix.dm,org.opendayl
- ight.controller.sal.packet,org.slf4j,org.opendaylight.controller.sal.co
- re,org.opendaylight.controller.forwardingrulesmanager,org.opendaylight.
- controller.sal.flowprogrammer,org.osgi.framework,org.opendaylight.contr
- oller.switchmanager,org.opendaylight.controller.yaon,org.opendaylight.c
- ontroller.sal.binding.api";version="0.5.0",org.opendaylight.controller.
- yaon;uses:="org.opendaylight.controller.sal.binding.api";version="0.5.0
- "
+ ndaylight.controller.forwardingrulesmanager,org.opendaylight.controller
+ .sal.flowprogrammer,org.opendaylight.controller.sal.core,org.opendaylig
+ ht.controller.statisticsmanager,org.apache.felix.dm,org.opendaylight.co
+ ntroller.switchmanager,org.opendaylight.controller.sal.packet,org.opend
+ aylight.controller.yaon,org.slf4j";version="0.5.0",org.opendaylight.con
+ troller.yaon;version="0.5.0"
 Import-Package: net.sf.json;version="[2.4,3)",org.apache.felix.dm;versio
  n="[3.0,4)",org.apache.http,org.apache.http.client;version="[4.3,5)",or
  g.apache.http.client.methods;version="[4.3,5)",org.apache.http.entity,o
