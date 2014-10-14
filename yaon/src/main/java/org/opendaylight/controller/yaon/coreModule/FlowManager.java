@@ -338,7 +338,7 @@ public class FlowManager implements InternalModule{
 	
 	public boolean setAndVerifyForwardinngFlow(String dpId, Node node, NodeConnector port, String portName, String vxlanPortNo, NodeConnector vxlanPort, String MAC, List<NodeConnector> otherPorts) {
 		
-		logger.info("Forwarding flow is being set/modify to vxlan port for DpId: {}, vxlan PortNo: {} and MAC: {}", dpId, portName, MAC);
+		logger.info("Forwarding flow is being set/modify to port for DpId: {}, vxlan PortNo: {} and MAC: {}", dpId, portName, MAC);
 		
 		/* Max_forward_flow */
 		Flow forward_mac = new Flow();
@@ -386,7 +386,7 @@ public class FlowManager implements InternalModule{
 	
 	public boolean removeForwardinngFlow(String dpId, Node node, NodeConnector port, String portName, String MAC) {
 		
-		logger.info("Forwarding flow is being set/modify to vxlan port for DpId: {}, vxlan PortNo: {} and MAC: {}", dpId, portName, MAC);
+		logger.info("Forwarding flow is being set/modify to port for DpId: {}, vxlan PortNo: {} and MAC: {}", dpId, portName, MAC);
 		
 		/* Max_forward_flow */
 		Flow forward_mac = new Flow();

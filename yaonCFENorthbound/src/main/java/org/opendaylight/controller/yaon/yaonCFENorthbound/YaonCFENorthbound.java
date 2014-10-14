@@ -212,7 +212,6 @@ public class YaonCFENorthbound {
 	        return Response.ok(new String("Port could not be added !")).build();
 	   }
 	
-	   return Response.status(200).entity(str.toString()).build();
     }
 
     @Path("/{sliceId}/Ports/{portId}/MAC")
