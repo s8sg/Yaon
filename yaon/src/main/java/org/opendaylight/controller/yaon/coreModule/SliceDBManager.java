@@ -207,6 +207,9 @@ public class SliceDBManager implements InternalModule{
 		}
 
 		ArrayList<ArrayList<Object>> alldetails = sliceDb.getMacs(sliceid, portid);
+		if(alldetails == null){
+			return null;
+		}
 		for(ArrayList<Object> macDetail : alldetails){
 			if(allMacs == null){
 				allMacs = new ArrayList<String>();

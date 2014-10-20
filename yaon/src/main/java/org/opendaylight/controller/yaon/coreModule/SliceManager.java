@@ -169,21 +169,21 @@ public class SliceManager implements InternalModule{
 	}
 	
 	
-	private boolean _addPort(String SliceId, String portId, String dataPathId, String portName, String vlan, String desc){
+	private boolean _addPort(String sliceId, String portId, String dataPathId, String portName, String vlan, String desc){
 		
 		logger.info("Debug : " + "Checking id slice Exist");
 		/* Check if slice exist */
-		ArrayList<Object> sliceDetails = sliceDbManager.getSlice(SliceId);
+		ArrayList<Object> sliceDetails = sliceDbManager.getSlice(sliceId);
 		if(sliceDetails == null){
-			logger.error("No Slice is created sliceId: {}", SliceId);
+			logger.error("No Slice is created sliceId: {}", sliceId);
 			return false;
 		}
 		
 		logger.info("Debug : " + "Checking if port is already addded for same sliceId and portId");
 		/* Check if port with same Id is already exist */
-		ArrayList<Object> portDetails = sliceDbManager.getPortById(SliceId, portId);
+		ArrayList<Object> portDetails = sliceDbManager.getPortById(sliceId, portId);
 		if(portDetails != null){
-			logger.error("A port with in same slice with same sliceId exist, for sliceId: {} and portId: {}", SliceId, portId);
+			logger.error("A port with in same slice with same sliceId exist, for sliceId: {} and portId: {}", sliceId, portId);
 			return false;
 		}
 		
@@ -205,13 +205,13 @@ public class SliceManager implements InternalModule{
 		}
 		
 		/* Generate vxlan port name */
-		String vxlanPortName = YaonUtil.generateVxlanPortName(SliceId);
+		String vxlanPortName = YaonUtil.generateVxlanPortName(sliceId);
 		logger.info("Debug : " + "Generated vxlan port name: " + vxlanPortName);
 		
 		logger.info("Debug : " + "Adding port to slice DB ");
 		/* Add port to slice DB */
-		if(!sliceDbManager.addPort(SliceId, dataPathId, portId, portName, vlan, vxlanPortName, desc)){
-			logger.error("port could not be added to sliceDb for portId: {}  sliceId: {}", portId, SliceId);
+		if(!sliceDbManager.addPort(sliceId, dataPathId, portId, portName, vlan, vxlanPortName, desc)){
+			logger.error("port could not be added to sliceDb for portId: {}  sliceId: {}", portId, sliceId);
 		}
 		
 		/* Extract node object from portDetails from topoDb */
@@ -235,9 +235,9 @@ public class SliceManager implements InternalModule{
 			
 			logger.info("Debug : " + "Getting multicast address for the slice");
 			/* Get multicast address for slice */
-			String multicast = sliceDbManager.getMulticastAddress(SliceId);
+			String multicast = sliceDbManager.getMulticastAddress(sliceId);
 			if(multicast == null){
-				logger.error("Multicast is not set for slice: {}", SliceId);
+				logger.error("Multicast is not set for slice: {}", sliceId);
 				return false;
 			}
 			
@@ -251,8 +251,8 @@ public class SliceManager implements InternalModule{
 			
 			logger.info("Debug : " + "Calling agent to add the vxlan port");
 			/* Call the agent to add vxlan port */
-			if(!agentManager.addTunneltToNetwork(SliceId, multicast, agentUri)){
-				logger.error("Agent call to add tunnel failed for dpId: {} sliceId: {}", dataPathId, SliceId);
+			if(!agentManager.addTunneltToNetwork(sliceId, multicast, agentUri)){
+				logger.error("Agent call to add tunnel failed for dpId: {} sliceId: {}", dataPathId, sliceId);
 				return false;
 			}
 			
@@ -300,7 +300,7 @@ public class SliceManager implements InternalModule{
 		
 		logger.info("Debug : " + "Getting all port in same slice and same DP");
 		/* Get all port in the slice and in same DP */
-		ArrayList<ArrayList<Object>> allPorts = sliceDbManager.getAllPortInSliceDp(SliceId, dataPathId);
+		ArrayList<ArrayList<Object>> allPorts = sliceDbManager.getAllPortInSliceDp(sliceId, dataPathId);
 		
 		/* Extract node connector */
 		/* generate NodeConnector Array */
@@ -333,15 +333,16 @@ public class SliceManager implements InternalModule{
 					NodeConnector otherPortNodeConn = topoDbManager.extractNodeConnector(otherTopoPortDetails);
 					logger.info("Debug : " + "Logger extracted portNo: {} and nodeConnector from topo port Details", otherPortNo);
 					/* Ignore current port */
+					logger.info("Debug : " + "otherPortId: " + otherPortId + "Current portId: " + portId);
 					if(!otherPortId.equals(portId)){		
 						logger.info("Debug : " + "Getting all macs configured under the other port");
 						/* Get all MACs to modify forward flow */
-						ArrayList<String> allMacs = sliceDbManager.getMacsByPort(SliceId, otherPortId);
+						ArrayList<String> allMacs = sliceDbManager.getMacsByPort(sliceId, otherPortId);
 						if(allMacs != null){
 							logger.info("Debug : " + "For each mac modifying the forwarding flow");
 							for(String MAC : allMacs){
 								if(!flowManager.setAndVerifyForwardinngFlow(dataPathId, topoNode, otherPortNodeConn, otherPortNo, vxlanPortNo, vxlanNodeConn, MAC, nodeConnActivePorts)) {
-									logger.warn("Flow could not be configured for: sliceID: {} portId: {} and Mac: {}", SliceId, portId, MAC);
+									logger.warn("Flow could not be configured for: sliceID: {} portId: {} and Mac: {}", sliceId, portId, MAC);
 								}
 							}
 						}
@@ -364,8 +365,8 @@ public class SliceManager implements InternalModule{
 		
 		logger.info("Debug : " + "Setting port state up in sliceDb");
 		/* Set port state up in slice DB */
-		if(!sliceDbManager.setPortStateUp(SliceId, portId)){
-			logger.error("Failue while setting port state up in slice Db for sliceId: {} and portId: {}", SliceId, portId);
+		if(!sliceDbManager.setPortStateUp(sliceId, portId)){
+			logger.error("Failue while setting port state up in slice Db for sliceId: {} and portId: {}", sliceId, portId);
 			return false;
 		}
 		
