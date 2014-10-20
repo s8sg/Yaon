@@ -1,0 +1,43 @@
+!SESSION 2014-10-15 08:47:34.756 -----------------------------------------------
+eclipse.buildId=4.3.0.I20130605-2000
+java.version=1.7.0_60
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_IN
+Framework arguments:  -product org.eclipse.epp.package.standard.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.standard.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-10-15 08:48:25.717
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-10-15 08:48:25.717
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\SDN-ODL'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2014-10-15 08:48:28.364
+!MESSAGE Manifest org.opendaylight.controller:cosanti.yaon:bundle:0.5.0 : Instructions in Export-Package that are never used: org\.opendaylight\.controller\.yaon\.internal
+                org\.opendaylight\.controller\.yaon
+Classpath: Jar:.,Jar:switchmanager,Jar:clustering.services,Jar:configuration,Jar:jcl-over-slf4j,Jar:slf4j-api,Jar:log4j-over-slf4j,Jar:logback-core,Jar:logback-classic,Jar:jackson-mapper-asl,Jar:jackson-core-asl,Jar:jackson-jaxrs,Jar:jackson-xc,Jar:jettison,Jar:stax-api,Jar:commons-io,Jar:commons-fileupload,Jar:commons-net,Jar:javax.servlet,Jar:javax.servlet.jsp,Jar:org.eclipse.equinox.ds,Jar:org.eclipse.equinox.util,Jar:org.eclipse.osgi.services,Jar:org.apache.felix.gogo.command,Jar:org.apache.felix.gogo.runtime,Jar:org.apache.felix.gogo.shell,Jar:org.eclipse.equinox.cm,Jar:org.eclipse.equinox.console,Jar:org.eclipse.equinox.launcher,Jar:org.eclipse.gemini.web.core,Jar:org.eclipse.gemini.web.extender,Jar:org.eclipse.gemini.web.tomcat,Jar:org.eclipse.virgo.kernel.equinox.extensions,Jar:org.eclipse.virgo.util.common,Jar:org.eclipse.virgo.util.io,Jar:org.eclipse.virgo.util.math,Jar:org.eclipse.virgo.util.osgi,Jar:org.eclipse.virgo.util.osgi.manifest,Jar:org.eclipse.virgo.util.parser.manifest,Jar:org.apache.felix.dependencymanager,Jar:org.osgi.core,Jar:org.osgi.compendium,Jar:org.apache.felix.dependencymanager.shell,Jar:org.apache.felix.shell,Jar:org.apache.felix.gogo.runtime,Jar:gson,Jar:jboss-transaction-api_1.1_spec,Jar:org.apache.felix.fileinstall,Jar:commons-lang3,Jar:org.eclipse.jdt.core.compiler.batch,Jar:javax.persistence,Jar:javax.activation,Jar:javax.annotation,Jar:javax.ejb,Jar:javax.el,Jar:javax.mail.glassfish,Jar:javax.xml.rpc,Jar:org.apache.catalina,Jar:org.apache.catalina.ha,Jar:org.apache.catalina.tribes,Jar:org.apache.coyote,Jar:org.apache.el,Jar:org.apache.jasper,Jar:org.apache.juli.extras,Jar:org.apache.tomcat.api,Jar:org.apache.tomcat.util,Jar:javax.servlet.jsp.jstl,Jar:javax.servlet.jsp.jstl.impl,Jar:javax.resource,Jar:org.springframework.asm,Jar:org.springframework.aop,Jar:org.springframework.context,Jar:org.springframework.context.support,Jar:org.springframework.core,Jar:org.springframework.beans,Jar:org.springframework.expression,Jar:org.springframework.web,Jar:com.springsource.org.aopalliance,Jar:org.springframework.web.servlet,Jar:spring-security-config,Jar:spring-core,Jar:spring-asm,Jar:spring-aop,Jar:aopalliance,Jar:spring-context,Jar:spring-beans,Jar:spring-security-core,Jar:spring-expression,Jar:spring-security-web,Jar:spring-jdbc,Jar:spring-web,Jar:spring-tx,Jar:spring-security-taglibs,Jar:spring-security-acl,Jar:org.springframework.transaction,Jar:chameleon-mbeans,Jar:jersey-core,Jar:jersey-server,Jar:asm,Jar:jersey-client,Jar:jersey-json,Jar:jaxb-impl,Jar:jaxb-api,Jar:stax-api,Jar:activation,Jar:asm-all,Jar:org.eclipse.persistence.moxy,Jar:org.eclipse.persistence.core,Jar:org.eclipse.persistence.asm,Jar:org.eclipse.persistence.antlr,Jar:yang-common,Jar:object-cache-api,Jar:yang-data-api,Jar:yang-model-api,Jar:jsr305,Jar:yang-data-util,Jar:ietf-inet-types,Jar:ietf-yang-types,Jar:yang-ext,Jar:guava,Jar:javassist,Jar:sal,Jar:forwardingrulesmanager,Jar:statisticsmanager,Jar:org.eclipse.osgi,Jar:topologymanager,Jar:sqljet,Jar:antlr-runtime,Jar:httpclient-osgi,Jar:org.apache.servicemix.bundles.json-lib,Jar:yang-binding,Jar:concepts,Jar:util,Jar:java-concurrent-hash-trie-map,Jar:sal-binding-api,Jar:sal-common-api
+
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2014-10-15 08:48:28.364
+!MESSAGE Manifest org.opendaylight.controller:cosanti.yaon:bundle:0.5.0 : Superfluous export-package instructions: [org.opendaylight.controller.yaon, org.opendaylight.controller.yaon.internal]
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2014-10-15 08:48:28.364
+!MESSAGE Manifest org.opendaylight.controller:cosanti.yaon:bundle:0.5.0 : Bundle-Activator not found on the bundle class path nor in imports: org.opendaylight.controller.yaon.internal.Activator
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2014-10-15 08:48:28.365
+!MESSAGE Manifest org.opendaylight.controller:cosanti.yaon:bundle:0.5.0 : Unresolved references to [org.opendaylight.controller.yaon.internal] by class(es) on the Bundle-Classpath[Jar:dot]: []
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2014-10-15 08:48:28.365
+!MESSAGE Manifest org.opendaylight.controller:cosanti.yaon:bundle:0.5.0 : The JAR is empty: dot
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2014-10-15 08:48:28.365
+!MESSAGE Error(s) found in manifest configuration

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1413288782275
+Bnd-LastModified: 1413792246149
 Build-Jdk: 1.7.0_60
 Built-By: SDN-ODL
 Bundle-ManifestVersion: 2
@@ -10,20 +10,20 @@ Bundle-Version: 1.0.0
 Created-By: Apache Maven Bundle Plugin
 Export-Package: org.opendaylight.controller.yaon.yaonCFENorthbound;versi
  on="1.0.0.SNAPSHOT";uses:="javax.ws.rs,javax.ws.rs.core"
-Import-Package: org.opendaylight.controller.yaon.yaonCFE;version="[0.5,1
- )",org.opendaylight.controller.sal.utils;version="[0.9,1)",javax.ws.rs;
- version="[1.1,2)",javax.ws.rs.core;version="[1.1,2)",org.json.simple.pa
- rser;version="[1.1,2)",org.json.simple;version="[1.1,2)",org.slf4j;vers
- ion="[1.7,2)",com.fasterxml.jackson.jaxrs.base;version="[2.3,3)",javax.
- xml.bind.annotation,org.apache.catalina.filters;version="[7.0,8)",com.f
- asterxml.jackson.jaxrs.json;version="[2.3,3)",org.opendaylight.controll
- er.sal.packet.address;version="[0.9,1)",org.opendaylight.controller.nor
- thbound.commons.exception;version="[0.4,1)",org.opendaylight.yang.gen.v
- 1.urn.ietf.params.xml.ns.yang.ietf.inet.types.rev100924,org.opendayligh
- t.controller.northbound.commons;version="[0.4,1)",org.opendaylight.cont
- roller.sal.authorization;version="[0.9,1)",javax.xml.bind,org.opendayli
- ght.controller.northbound.commons.utils;version="[0.4,1)",org.apache.co
- mmons.logging,com.sun.jersey.spi.container.servlet;version="[1.17,2)"
+Import-Package: org.opendaylight.controller.yaon.yaonCFE,org.opendayligh
+ t.controller.sal.utils;version="[0.9,1)",javax.ws.rs;version="[1.1,2)",
+ javax.ws.rs.core;version="[1.1,2)",org.slf4j;version="[1.7,2)",org.json
+ .simple.parser;version="[1.1,2)",org.json.simple;version="[1.1,2)",java
+ x.xml.bind,com.fasterxml.jackson.jaxrs.json;version="[2.3,3)",com.faste
+ rxml.jackson.jaxrs.base;version="[2.3,3)",com.sun.jersey.spi.container.
+ servlet;version="[1.17,2)",org.opendaylight.controller.northbound.commo
+ ns;version="[0.4,1)",org.apache.catalina.filters;version="[7.0,8)",org.
+ opendaylight.controller.sal.packet.address;version="[0.9,1)",javax.xml.
+ bind.annotation,org.opendaylight.controller.northbound.commons.utils;ve
+ rsion="[0.4,1)",org.opendaylight.yang.gen.v1.urn.ietf.params.xml.ns.yan
+ g.ietf.inet.types.rev100924,org.opendaylight.controller.sal.authorizati
+ on;version="[0.9,1)",org.opendaylight.controller.northbound.commons.exc
+ eption;version="[0.4,1)",org.apache.commons.logging
 Originally-Created-By: Apache Maven Bundle Plugin
 Tool: Bnd-2.1.0.20130426-122213
 Web-ContextPath: /Yaon

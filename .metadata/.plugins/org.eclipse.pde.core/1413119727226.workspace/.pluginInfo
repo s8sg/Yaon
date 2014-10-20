@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map>
+	<bundle bundleID="513" class="org.opendaylight.controller.yaon.internal.Activator" localization="OSGI-INF/l10n/bundle" name="cosanti.yaon" project="yaon"/>
+</map>
