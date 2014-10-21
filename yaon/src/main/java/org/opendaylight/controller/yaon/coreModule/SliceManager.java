@@ -341,7 +341,7 @@ public class SliceManager implements InternalModule{
 						if(allMacs != null){
 							logger.info("Debug : " + "For each mac modifying the forwarding flow");
 							for(String MAC : allMacs){
-								if(!flowManager.setAndVerifyForwardinngFlow(dataPathId, topoNode, otherPortNodeConn, otherPortNo, vxlanPortNo, vxlanNodeConn, MAC, nodeConnActivePorts)) {
+								if(!flowManager.setAndVerifyForwardinngFlow(dataPathId, topoNode, otherPortNodeConn, otherPortName, vxlanPortNo, vxlanNodeConn, MAC, nodeConnActivePorts)) {
 									logger.warn("Flow could not be configured for: sliceID: {} portId: {} and Mac: {}", sliceId, portId, MAC);
 								}
 							}

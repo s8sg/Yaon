@@ -336,7 +336,7 @@ public class SwitchEventManager implements InternalModule{
 	private boolean _switchDeleted(Node node, String dpId) {
 		
 		/* Check topo DB to get switch */
-		logger.info("Debug : " +"Checking if Switch is added to Topo DB!");
+		logger.info("Debug : " +"Checking if Switch of dpId: " + dpId + " is added to Topo DB!");
 		Node topoNode = topoDbManager.getNode(dpId);
         
 		/* Check if not null */
