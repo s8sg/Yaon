@@ -43,6 +43,9 @@ public class FlowManager implements InternalModule{
 	private String defaultPortDropFlows = "PORT_DROP_FLOWS";
 	private String vxlanPortForwardFlows = "VXLAN_PORT_FORWARD_FLOWS";
 	private String macForwardFlows = "MAC_FORWARD_FLOWS";
+	private short switch_drop_priority = 512;
+	private short port_drop_priority = 2000;
+	private short forward_priority = 4096;
 	private static long flowId = 1;
 	/* Initializing Functions */
 	@Override
@@ -89,7 +92,7 @@ public class FlowManager implements InternalModule{
 		actions.add(new Drop());
 		drop_switch_src_1.setMatch(match);
 		drop_switch_src_1.setActions(actions);
-		drop_switch_src_1.setPriority((short)4096);
+		drop_switch_src_1.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_src_1, node));
@@ -112,7 +115,7 @@ public class FlowManager implements InternalModule{
 		actions.add(new Drop());
 		drop_switch_src_2.setMatch(match);
 		drop_switch_src_2.setActions(actions);
-		drop_switch_src_2.setPriority((short)4096);
+		drop_switch_src_2.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_src_2, node));
@@ -135,7 +138,7 @@ public class FlowManager implements InternalModule{
 		actions.add(new Drop());
 		drop_switch_dst.setMatch(match);
 		drop_switch_dst.setActions(actions);
-		drop_switch_dst.setPriority((short)4096);
+		drop_switch_dst.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_dst, node));
@@ -158,7 +161,7 @@ public class FlowManager implements InternalModule{
 		actions.add(new Drop());
 		drop_switch_any.setMatch(match);
 		drop_switch_any.setActions(actions);
-		drop_switch_any.setPriority((short)4096);
+		drop_switch_any.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_any, node));
 		if (!status.isSuccess()) {
@@ -199,7 +202,7 @@ public class FlowManager implements InternalModule{
 		/* Configure flow */
 		drop_port.setMatch(match);
 		drop_port.setActions(actions);
-		drop_port.setPriority((short)2000);
+		drop_port.setPriority((short)port_drop_priority);
 		/* Add Flow to switch */
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultPortDropFlows, flowName, drop_port, node));
 		if (!status.isSuccess()) {
@@ -239,7 +242,7 @@ public class FlowManager implements InternalModule{
 		/* Configure flow */
 		drop_port.setMatch(match);
 		drop_port.setActions(actions);
-		drop_port.setPriority((short)2000);
+		drop_port.setPriority((short)port_drop_priority);
 		/* Add Flow to switch */
 		status = forwardingRulesManager.uninstallFlowEntry(new FlowEntry(defaultPortDropFlows, flowName, drop_port, node));
 		if (!status.isSuccess()) {
@@ -283,7 +286,7 @@ public class FlowManager implements InternalModule{
 		
 		forward_vxlan.setMatch(match);
 		forward_vxlan.setActions(actions);
-		forward_vxlan.setPriority((short)512);
+		forward_vxlan.setPriority((short)forward_priority);
 		
 		/* Add/Delete Flow */
 		if(actions.size() > 0){
@@ -323,7 +326,7 @@ public class FlowManager implements InternalModule{
 	
 		forward_vxlan.setMatch(match);
 		forward_vxlan.setActions(actions);
-		forward_vxlan.setPriority((short)512);
+		forward_vxlan.setPriority((short)forward_priority);
 		
 		/* Add/Delete Flow */
 		status = forwardingRulesManager.uninstallFlowEntry(new FlowEntry(vxlanPortForwardFlows, flowName, forward_vxlan, node));
@@ -372,7 +375,7 @@ public class FlowManager implements InternalModule{
 		actions.add(new Output(vxlanPort));
 		forward_mac.setMatch(match);
 		forward_mac.setActions(actions);
-		forward_mac.setPriority((short)512);
+		forward_mac.setPriority((short)forward_priority);
 		/* Add Flow to switch */
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(macForwardFlows, flowName, forward_mac, node));
 		if (!status.isSuccess()) {
@@ -412,7 +415,7 @@ public class FlowManager implements InternalModule{
 		/* Add vxlan port to the action */
 		forward_mac.setMatch(match);
 		forward_mac.setActions(actions);
-		forward_mac.setPriority((short)512);
+		forward_mac.setPriority((short)forward_priority);
 		
 		/* Delete Flow from switch */
 		status = forwardingRulesManager.uninstallFlowEntry(new FlowEntry(macForwardFlows, flowName, forward_mac, node));
