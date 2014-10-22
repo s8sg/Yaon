@@ -162,8 +162,10 @@ public class TopoDB {
 				return false;
 			}
 			else {
-				ArrayList<Object> portList = list.get(0);
+				ArrayList<Object> feildsValue = list.get(0);
+				ArrayList<Object> portList = (ArrayList<Object>) feildsValue.get(0);
 				portList.add(portName);
+				logger.error("New port: {} is added to switchPort list for switch: {}", portName, dpId);
 			}
 		}
 		catch(DBException e){
@@ -226,7 +228,8 @@ public class TopoDB {
 		try {
 			ArrayList<ArrayList<Object>> list = switchPortTable.find(primaryKeyValues, null);
 			if(list != null){
-				ArrayList<Object> portList = list.get(0);
+				ArrayList<Object> feildsValue = list.get(0);
+				ArrayList<Object> portList = (ArrayList<Object>) feildsValue.get(0);
 				for(Object port : portList){
 					if(port.equals(portName)){
 						portList.remove(port);
@@ -374,16 +377,20 @@ public class TopoDB {
 			if(switchPortList == null){
 				/* Add switch ports list */
 				ArrayList<Object> ports = new ArrayList<Object>();
+				
 				fieldsValues = new ArrayList<Object>();
 				fieldsValues.add(ports);
-				if(!switchPortTable.add(primaryKeyValues, fieldsValues)){
+				
+				if(!switchPortTable.add(primaryKeyValues, ports)){
 					logger.error("Add to Switch Port table failed !");
 					return false;
 				}
 			}
 			else {
 				/* Clear switch port list */ 
-				switchPortList.get(0).clear();
+				fieldsValues = switchPortList.get(0);
+				ArrayList<Object> ports = (ArrayList<Object>) fieldsValues.get(0);
+				ports.clear();
 			}
 		} catch (DBException e) {
 			logger.error("Exception while getting data from Switch Table: {} !", e);

@@ -125,7 +125,7 @@ public class TopoDBManager implements InternalModule {
 		ArrayList<Object> ports;
 		synchronized (topoDbLock) {
 			ports = topoDb.getPortsByDp(dpId);
-			if(ports == null) {
+			if(ports == null || ports.size() == 0) {
 				logger.error("No ports are found !");
 				return null;
 			}

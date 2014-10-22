@@ -345,13 +345,6 @@ public class SwitchEventManager implements InternalModule{
 			return false;
 		}
 		
-		logger.info("Debug : " +"Deleting switch from Topo DB!");
-		/* delete switch from topo DB */
-		if(!topoDbManager.deleteSwitch(dpId)){
-			logger.error("Switch deletion from topo db failed for switch: {}", dpId);
-			return false;
-		}
-		
 		/* Get ports for the switch */
 		logger.info("Debug : " +"Getting all ports for the switch from topoDB!");
 		ArrayList<String> ports = topoDbManager.getPortsNameByDp(dpId);
@@ -418,6 +411,13 @@ public class SwitchEventManager implements InternalModule{
 			if(!sliceDbManager.setPortStateDown(sliceId, portId)){
 				logger.error("Port state could not be Set as down for dpId: {} portName: {}", dpId, portName);
 			}
+		}
+		
+		logger.info("Debug : " +"Deleting switch from Topo DB!");
+		/* delete switch from topo DB */
+		if(!topoDbManager.deleteSwitch(dpId)){
+			logger.error("Switch deletion from topo db failed for switch: {}", dpId);
+			return false;
 		}
 		
 		return true;
@@ -495,9 +495,6 @@ public class SwitchEventManager implements InternalModule{
 		
 		/* Check if normal port or Vxlan port */
 		logger.info("Debug : " +"Checking if port is normal port or vxlan port!");
-		/* TODO: whether a vxlan port or normal port : decision should be taken on name as well as if any port 
-		 * present on the same switch and same slice ID
-		 */
 		if(!YaonUtil.isVxlanPort(portName)){
 			
 			logger.info("Debug : " +"Precessing non-vxlan port!");
