@@ -90,8 +90,7 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
         }
     }
 
-    public void setFlowProgrammerService(IFlowProgrammerService s)
-    {
+    public void setFlowProgrammerService(IFlowProgrammerService s) {
     	logger.info("FlowProgrammer is set!");
         this.flowProgrammer = s;
     }
@@ -115,24 +114,24 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
         }
     }
 
-    void setForwardingRulesManager(IForwardingRulesManager s){
+    void setForwardingRulesManager(IForwardingRulesManager s) {
     	logger.info("ForwardingRulesManager is set!");
     	forwardingRulesManager = s;
     }
 
-    void unsetForwardingRulesManager(IForwardingRulesManager s){
+    void unsetForwardingRulesManager(IForwardingRulesManager s) {
     	if (this.forwardingRulesManager == s) {
             logger.info("Controller is removed!");
             this.forwardingRulesManager = null;
         }
     }
 
-    void setStatisticsManager(IStatisticsManager s){
+    void setStatisticsManager(IStatisticsManager s) {
     	logger.info("Statistics Manager is set!");
     	statManager = s;
     }
 
-    void unsetStatisticsManager(IStatisticsManager s){
+    void unsetStatisticsManager(IStatisticsManager s) {
     	if (this.statManager  == s) {
             logger.info("Statistics Manager is removed!");
             this.statManager = null;
@@ -196,7 +195,7 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
     	modules.put(ModuleName.TopoDBManager.toString(), topoDbManager);
 
     	logger.info("Initializing Switch Event Manager!");
-    	switchEventManager = new SwitchEventManager();    	
+    	switchEventManager = new SwitchEventManager();
     	modules.put(ModuleName.SwitchEventManager.toString(), switchEventManager);
 
     	logger.info("Initializing Slice Manager!");

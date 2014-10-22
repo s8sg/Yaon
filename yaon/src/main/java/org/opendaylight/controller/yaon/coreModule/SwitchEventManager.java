@@ -190,7 +190,7 @@ public class SwitchEventManager implements InternalModule{
         
 		/* Check if not null */
 		if(topoNode != null){
-			logger.info("Switch Node is already added in topo Db - Updating switch state!");
+			logger.info("Switch Node is already added in topo Db - Updating switch state in topo DB!");
 		}
 		
 		logger.info("Debug : " +"Adding switch to Topo Db !");
@@ -259,10 +259,10 @@ public class SwitchEventManager implements InternalModule{
 					}
 				}
 				else {
-					logger.info("Port is already added in inactive switch: {}", nodeConnector);
+					logger.info("Port is already added while the switch was inactive: {}", nodeConnector);
 					/* Add port specific default flows */
 					 
-					logger.info("Debug : " +"Again Adding port Default Flow !");
+					logger.info("Debug : " +"Adding port Default Flow as the switch was inactive in time of port appeared!");
 					if(!flowManager.setAndVerifyPortDefaultFlow(dpId, node, portNo, null, nodeConnector)){
 						logger.error("Port default could not be successfully added !");
 						return false;
@@ -340,7 +340,7 @@ public class SwitchEventManager implements InternalModule{
 		Node topoNode = topoDbManager.getNode(dpId);
         
 		/* Check if not null */
-		if(topoNode != null){
+		if(topoNode == null){
 			logger.warn("Node is not present in Topo Db - Duplicate node delete notification for switch: {}", dpId);
 			return false;
 		}
@@ -459,7 +459,7 @@ public class SwitchEventManager implements InternalModule{
 		logger.info("Debug : " +"Checking if switch is already added for dpId: {}!", dpId);
 		if(topoDbManager.getNode(dpId) == null){
 			/* Add switch with inactive state in topoDb */
-			logger.info("Debug : " +"Adding switch with state down for dpId: {} !", dpId);
+			logger.info("Debug : " +"Adding switch in topoDB with state down for dpId: {} !", dpId);
 			if(!topoDbManager.addSwitch(dpId, node, false)){
 				logger.error("Switch addition with state sown failed for dpID: {}", dpId);
 				return false;

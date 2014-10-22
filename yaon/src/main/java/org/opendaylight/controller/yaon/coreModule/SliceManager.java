@@ -204,6 +204,14 @@ public class SliceManager implements InternalModule{
 			return false;
 		}
 		
+		logger.info("Debug : " + "Checking if multicast is configured for the slice");
+		/* Get multicast address for slice */
+		String multicast = sliceDbManager.getMulticastAddress(sliceId);
+		if(multicast == null){
+			logger.error("Slice configuration is incomplete, Multicast is not set for slice: {}", sliceId);
+			return false;
+		}
+		
 		/* Generate vxlan port name */
 		String vxlanPortName = YaonUtil.generateVxlanPortName(sliceId);
 		logger.info("Debug : " + "Generated vxlan port name: " + vxlanPortName);
@@ -233,14 +241,6 @@ public class SliceManager implements InternalModule{
 		if(vxlanPortDetails == null){
 			logger.info("Debug : " + "Vxlan port is not added - going to call agent");
 			
-			logger.info("Debug : " + "Getting multicast address for the slice");
-			/* Get multicast address for slice */
-			String multicast = sliceDbManager.getMulticastAddress(sliceId);
-			if(multicast == null){
-				logger.error("Multicast is not set for slice: {}", sliceId);
-				return false;
-			}
-			
 			logger.info("Debug : " + "Getting agent uri for the dpId");
 			/* Get agent uri */
 			String agentUri = sliceDbManager.getAgentUri(dataPathId);
@@ -251,7 +251,7 @@ public class SliceManager implements InternalModule{
 			
 			logger.info("Debug : " + "Calling agent to add the vxlan port");
 			/* Call the agent to add vxlan port */
-			if(!agentManager.addTunneltToNetwork(sliceId, multicast, agentUri)){
+			if(!agentManager.addTunnelToNetwork(sliceId, multicast, agentUri)){
 				logger.error("Agent call to add tunnel failed for dpId: {} sliceId: {}", dataPathId, sliceId);
 				return false;
 			}
@@ -474,7 +474,7 @@ public class SliceManager implements InternalModule{
 			String agentUri = sliceDbManager.getAgentUri(dataPathId);
 			
 			/* Call agent to delete tunnel from switch */
-			if(!agentManager.deleteTunneltFromNetwork(sliceId, agentUri)){
+			if(!agentManager.deleteTunnelFromNetwork(sliceId, agentUri)){
 				logger.warn("Tunnel could not be deleted from switch");
 			}
 		}

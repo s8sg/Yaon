@@ -24,7 +24,7 @@ public class AgentManager implements InternalModule{
 		return true;
 	}
 
-	public boolean addTunneltToNetwork(String sliceId, String broadcast_address, String agentUri) {
+	public boolean addTunnelToNetwork(String sliceId, String broadcast_address, String agentUri) {
 		/* Create TunnelAdd request */
 		logger.info("Debug: " + "Creating new tunnel add request for sliceId: {} and Broadcast_address: {}", sliceId, broadcast_address);
 		TunnelAddRequest tunnelAddRequest = new TunnelAddRequest(sliceId, broadcast_address);
@@ -36,7 +36,7 @@ public class AgentManager implements InternalModule{
 		return true;
 	}
 	
-	public boolean deleteTunneltFromNetwork(String sliceId, String agentUri) {
+	public boolean deleteTunnelFromNetwork(String sliceId, String agentUri) {
 		/* Create TunnelAdd request */
 		logger.info("Debug: " + "Creating new tunnel delete request for sliceId: {}", sliceId);
 		TunnelDeleteRequest tunneDeleteRequest = new TunnelDeleteRequest(sliceId);
