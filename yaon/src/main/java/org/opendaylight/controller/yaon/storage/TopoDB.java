@@ -162,8 +162,7 @@ public class TopoDB {
 				return false;
 			}
 			else {
-				ArrayList<Object> feildsValue = list.get(0);
-				ArrayList<Object> portList = (ArrayList<Object>) feildsValue.get(0);
+				ArrayList<Object> portList = list.get(0);
 				portList.add(portName);
 				logger.error("New port: {} is added to switchPort list for switch: {}", portName, dpId);
 			}
@@ -228,11 +227,16 @@ public class TopoDB {
 		try {
 			ArrayList<ArrayList<Object>> list = switchPortTable.find(primaryKeyValues, null);
 			if(list != null){
-				ArrayList<Object> feildsValue = list.get(0);
-				ArrayList<Object> portList = (ArrayList<Object>) feildsValue.get(0);
-				for(Object port : portList){
-					if(port.equals(portName)){
-						portList.remove(port);
+				ArrayList<Object> portList = list.get(0);
+				if(portList == null){
+					logger.error("Port list is NULL !");
+				}
+				else {
+					logger.error("No of ports found to be deleted is : " + portList.size());
+					for(Object port : portList){
+						if(port.equals(portName)){
+							portList.remove(port);
+						}
 					}
 				}
 			}
@@ -299,10 +303,10 @@ public class TopoDB {
 		/* Get ports */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
-		ArrayList<ArrayList<Object>> portsList = null;
+		ArrayList<ArrayList<Object>> list = null;
 		try {
-			portsList = switchPortTable.find(primaryKeyValues, null);
-			if(portsList == null){
+			list = switchPortTable.find(primaryKeyValues, null);
+			if(list == null){
 				logger.error("No Switch is found !");
 				return null;
 			}
@@ -311,7 +315,9 @@ public class TopoDB {
 			return null;
 		}
 		
-		return portsList.get(0); 
+		ArrayList<Object> portList = list.get(0);
+		
+		return portList; 
 	}
 	
 	/* Switch Specific calls */
@@ -376,21 +382,18 @@ public class TopoDB {
 			ArrayList<ArrayList<Object>> switchPortList = switchPortTable.find(primaryKeyValues, null);
 			if(switchPortList == null){
 				/* Add switch ports list */
-				ArrayList<Object> ports = new ArrayList<Object>();
+				ArrayList<Object> portsList = new ArrayList<Object>();
 				
-				fieldsValues = new ArrayList<Object>();
-				fieldsValues.add(ports);
-				
-				if(!switchPortTable.add(primaryKeyValues, ports)){
+				if(!switchPortTable.add(primaryKeyValues, portsList)){
 					logger.error("Add to Switch Port table failed !");
 					return false;
 				}
 			}
 			else {
 				/* Clear switch port list */ 
-				fieldsValues = switchPortList.get(0);
-				ArrayList<Object> ports = (ArrayList<Object>) fieldsValues.get(0);
-				ports.clear();
+				//fieldsValues = switchPortList.get(0);
+				//ArrayList<Object> ports = (ArrayList<Object>) fieldsValues.get(0);
+				//ports.clear();
 			}
 		} catch (DBException e) {
 			logger.error("Exception while getting data from Switch Table: {} !", e);

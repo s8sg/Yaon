@@ -15,7 +15,7 @@ public class SwitchPortTable extends HashTable{
 	private static ArrayList<String> fieldNames = new ArrayList<String>() {{
 	    add("PORTS");
 	}};
-	private static int feildsNos = 1;
+	private static int feildsNos = 65535;
 	private static ArrayList<String> indexFieldsName = new ArrayList<String>(){{
 		add("DPID");
 	}};
@@ -71,10 +71,12 @@ public class SwitchPortTable extends HashTable{
 		}
 
 		/* Check if invalid nos of arguments passed */
+		/*
 		if(fieldsValues.size() != feildsNos){
 			logger.error("Invalid nos of feilds value is passed !");
 			return false;
 		}
+		*/
 
 		/* generate primary key */
 		String pk = (String) primaryKeyValues.get(0);
@@ -159,10 +161,12 @@ public class SwitchPortTable extends HashTable{
 		}
 
 		/* Check if fieldsName and fieldsValue is same */
+		/*
 		if(fieldsName.size() != fieldsValue.size()){
 			logger.error("Invalid nos of arguments is passed !");
 			return false;
 		}
+		*/
 
 		/* generate primary key */
 		String pk = (String) primaryKeyValues.get(0);
