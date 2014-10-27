@@ -12,11 +12,12 @@ public class TopoDB {
 	private static TopoDB topoDb = null;
 	private DBConnection connection = null;
 	private HashMap<String, Table> tables = null;
-	
+
 	/* Private globals for table name */
 	private static String switchTableName = "SWITCHTABLE";
 	private static String switchPortTableName = "SWITCHPORTTABLE";
 	private static String portTableName = "PORTTABLE";
+	private static String portNametable = "PORTNAMETABLE";
 
 	/* Private constructor should be called only from createDb() */
 	private TopoDB(DBConnection connection, HashMap<String, Table> tables){
@@ -31,7 +32,7 @@ public class TopoDB {
 		conn = HashDbConnection.init();
 		return conn;
 	}
-	
+
 	/* Static method to create Database
 	 * @dpPath: Path of the database file
 	 * @return: YAON FileDb object
@@ -68,10 +69,14 @@ public class TopoDB {
 		/* 	Init SwitchPort Table */
 		Table switchPortTable = SwitchPortTable.init(connection, switchPortTableName);
 		tables.put(switchPortTableName, switchPortTable);
-		
+
 		/* 	Init Port Table */
 		Table portTable = PortTable.init(connection, portTableName);
 		tables.put(portTableName, portTable);
+
+		/* Init PortName Table*/
+		Table portNameTable  = PortNameTable.init(connection, portNametable);
+		tables.put(portNametable, portNameTable);
 
 		/* DB is successfully created */
 		TopoDB topoDb = new TopoDB(connection, tables);
@@ -85,55 +90,60 @@ public class TopoDB {
 	private SwitchTable getSwitchTable(){
 		return (SwitchTable)tables.get(switchTableName);
 	}
-	
+
 	/* Method to get Switch-Port table */
 	private SwitchPortTable getSwitchPortTable(){
 		return (SwitchPortTable)tables.get(switchPortTableName);
 	}
-	
+
 	/* Method to get Port table */
 	private PortTable getPortTable(){
 		return (PortTable)tables.get(portTableName);
 	}
 
+	/* Method to get PortName table */
+	private PortNameTable getPortNameTable(){
+		return (PortNameTable)tables.get(portNametable);
+	}
+
 	/* Port Specific calls */
-	
-	
+
+
 	public boolean addPort(String dpId, Object node, String portName, String portNo, Object nodeConnector){
-		
-		boolean ret = false; 
-		
+
+		boolean ret = false;
+
 		logger.info("Addeding port to TopoDb for DpId: {}, PortName: {} and PortNo: {}", dpId, portName, portNo);
-		
+
 		/* Get port table */
 		PortTable portTable = getPortTable();
 		if(portTable == null) {
 			logger.error("Port Table is not initialized !");
 			return false;
 		}
-		
+
 		/* Get Switch-Port table */
 		SwitchPortTable switchPortTable = getSwitchPortTable();
 		if(switchPortTable == null){
 			logger.error("Switch port table is not initialized !");
 			return false;
 		}
-		
+
 		/* get switch table */
 		SwitchTable switchTable = getSwitchTable();
 		if(switchTable == null){
 			logger.error("Switch table is not initialized !");
 			return false;
 		}
-		
+
 		/* Check if switch exist */
 		ArrayList<Object> switchDetails = this.getSwitch(dpId);
 		if(switchDetails == null){
 			logger.error("Switch must be added before adding port !");
 			return false;
 		}
-		
-		
+
+
 		/* Add the port to Port Table*/
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -151,7 +161,7 @@ public class TopoDB {
 			logger.error("Exception while getting data from Port Table !");
 			return false;
 		}
-		
+
 		/* Add the port to Switch-Port Table */
 		primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -171,30 +181,30 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Port Table: {}", e);
 			return false;
 		}
-		
-		return ret; 
+
+		return ret;
 	}
-	
+
 	public boolean deletePort(String dpId, String portName){
-		
+
 		boolean ret = false;
-		
+
 		logger.info("Deleting port from Topo Db for dpId : {} and portName: {}", dpId, portName);
-		
+
 		/* Get port table */
 		PortTable portTable = getPortTable();
 		if(portTable == null) {
 			logger.error("Port Table is not initialized !");
 			return false;
 		}
-		
+
 		/* Get Switch-Port table */
 		SwitchPortTable switchPortTable = getSwitchPortTable();
 		if(switchPortTable == null){
 			logger.error("Switch port table is not initialized !");
 			return false;
 		}
-		
+
 		/* Get the port */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -206,21 +216,21 @@ public class TopoDB {
 				logger.error("Data is not present in the Port Table !");
 				return false;
 			}
-			
-		
+
+
 		} catch (DBException e) {
 			logger.error("Exception while getting data from Port Table !");
 			return false;
 		}
-		
+
 		/* Delete the port */
-		try {			
-			ret = portTable.del(primaryKeyValues);	
+		try {
+			ret = portTable.del(primaryKeyValues);
 		} catch (DBException e) {
 			logger.error("Exception while getting data from Port Table !");
 			return false;
 		}
-		
+
 		/* Delete the port from switchPortTable */
 		primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -245,23 +255,23 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Port Table !");
 			return false;
 		}
-		
+
 		return ret;
 	}
-	
+
 	public ArrayList<Object> getPort(String dpId, String portName) {
-		
+
 		ArrayList<Object> ret = null;
-		
+
 		logger.info("Finding port from Topo Db for dpId : {} and portName: {}", dpId, portName);
-		
+
 		/* Get port table */
 		PortTable portTable = getPortTable();
 		if(portTable == null) {
 			logger.error("Port Table is not initialized !");
 			return null;
 		}
-		
+
 		/* Get the port */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -273,33 +283,33 @@ public class TopoDB {
 				logger.error("No port details found !");
 				return null;
 			}
-			
+
 			/* Initialize ret */
 			ret = new ArrayList<Object>();
 			for(Object obj : ports.get(0)){
 				ret.add(obj);
 			}
-		
+
 		} catch (DBException e) {
 			logger.error("Exception while getting data from Port Table !");
 			return null;
 		}
-		
+
 		return ret;
 	}
-	
+
 	public ArrayList<Object> getPortsByDp(String dpId){
-		
+
 		/* get switch-port table */
 		SwitchPortTable switchPortTable = getSwitchPortTable();
-		
+
 		logger.info("Finding ports from Topo Db for dpId : {}", dpId);
-		
+
 		if(switchPortTable == null){
 			logger.error("Switch port table is not initialized !");
 			return null;
 		}
-		
+
 		/* Get ports */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -314,35 +324,35 @@ public class TopoDB {
 			logger.error("Exception while getting data from Port Table !");
 			return null;
 		}
-		
+
 		ArrayList<Object> portList = list.get(0);
-		
-		return portList; 
+
+		return portList;
 	}
-	
+
 	/* Switch Specific calls */
-	
-	
+
+
 	public boolean addSwitch(String dpId, Object nodeObject, boolean switchState){
 
 		boolean ret = false;
-		
+
 		logger.info("Adding switch to Topo DB for DpId : {}", dpId);
-		
+
 		/* get switch table */
 		SwitchTable switchTable = getSwitchTable();
 		if(switchTable == null){
 			logger.error("Switch table is not initialized !");
 			return false;
 		}
-		
+
 		/* get switch port table */
 		SwitchPortTable switchPortTable = getSwitchPortTable();
 		if(switchPortTable == null){
 			logger.error("Switch Port table is not initialized !");
 			return false;
 		}
-		
+
 		/* Check if switch is already added to switch table */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		ArrayList<Object> fieldsValues = new ArrayList<Object>();
@@ -376,21 +386,21 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Table: {} !", e);
 			return false;
 		}
-		
+
 		/* Check if entry exist for switch */
 		try {
 			ArrayList<ArrayList<Object>> switchPortList = switchPortTable.find(primaryKeyValues, null);
 			if(switchPortList == null){
 				/* Add switch ports list */
 				ArrayList<Object> portsList = new ArrayList<Object>();
-				
+
 				if(!switchPortTable.add(primaryKeyValues, portsList)){
 					logger.error("Add to Switch Port table failed !");
 					return false;
 				}
 			}
 			else {
-				/* Clear switch port list */ 
+				/* Clear switch port list */
 				//fieldsValues = switchPortList.get(0);
 				//ArrayList<Object> ports = (ArrayList<Object>) fieldsValues.get(0);
 				//ports.clear();
@@ -399,31 +409,31 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Table: {} !", e);
 			return false;
 		}
-		
-		
+
+
 		return ret;
 	}
-	
+
 	public boolean deleteSwitch(String dpId){
-		
+
 		boolean ret = false;
-		
+
 		logger.info("Deleting switch from Topo Db for dpId : {}", dpId);
-		
+
 		/* get switch table */
 		SwitchTable switchTable = getSwitchTable();
 		if(switchTable == null){
 			logger.error("Switch table is not initialized !");
 			return false;
 		}
-		
+
 		/* get switch port table */
 		SwitchPortTable switchPortTable = getSwitchPortTable();
 		if(switchPortTable == null){
 			logger.error("Switch Port table is not initialized !");
 			return false;
 		}
-		
+
 		/* Check if switch is already added to switch table */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
@@ -431,7 +441,7 @@ public class TopoDB {
 			ArrayList<ArrayList<Object>> switchList = switchTable.find(primaryKeyValues, null);
 			if(switchList == null){
 				logger.error("Switch doesn't exist !");
-				return false;	
+				return false;
 			}
 			else {
 				/* Update the node object */
@@ -445,7 +455,7 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Table !");
 			return false;
 		}
-		
+
 		/* Check if entry exist for switch */
 		try {
 			ArrayList<ArrayList<Object>> switchPortList = switchPortTable.find(primaryKeyValues, null);
@@ -463,34 +473,34 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Table: {} !", e);
 			return false;
 		}
-		
+
 		return ret;
 	}
-	
+
 	public ArrayList<Object> getSwitch(String dpId){
-		
+
 		ArrayList<Object> ret = null;
-		
+
 		logger.info("Finding switch from Topo Db for dpId : {}", dpId);
-		
+
 		/* Get Switch table */
 		SwitchTable switchTable = getSwitchTable();
 		if(switchTable == null) {
 			logger.error("Switch Table is not initialized !");
 			return null;
 		}
-		
+
 		/* Get the port */
 		ArrayList<Object> primaryKeyValues = new ArrayList<Object>();
 		primaryKeyValues.add(dpId);
-		ArrayList<ArrayList<Object>> switchList = null; 
+		ArrayList<ArrayList<Object>> switchList = null;
 		try {
 			switchList = switchTable.find(primaryKeyValues, null);
 			if(switchList == null){
 				logger.info("Switch not found in DB !");
 				return null;
 			}
-			
+
 			/* Initialize ret */
 			ret = new ArrayList<Object>();
 			for(Object obj : switchList.get(0)){
@@ -500,7 +510,7 @@ public class TopoDB {
 			logger.error("Exception while getting data from Port Table !");
 			return null;
 		}
-		
+
 		return ret;
 	}
 }
