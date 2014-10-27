@@ -101,12 +101,8 @@ public class SwitchEventManager implements InternalModule{
 	public boolean portChanged(NodeConnector nodeConnector, UpdateType type, Map<String, Property> propMap){
 
 		/* Extract port information */
-		/* Extract port Name */
-		String portName = OdlUtil.getPortName(propMap);
-		if(portName == null){
-			logger.error("Port Name could not be extracted !");
-			return false;
-		}
+		/* Port name is determined later */ 
+		String portName = null;
 		
 		/* Extract port No */
 		String portNo = OdlUtil.getPortNo(nodeConnector);
@@ -132,6 +128,12 @@ public class SwitchEventManager implements InternalModule{
 		/* check type of port notification */
         switch (type) {
 	        case ADDED:
+	        	/* Extract port Name */
+	    		portName = OdlUtil.getPortName(propMap);
+	    		if(portName == null){
+	    			logger.error("Port Name could not be extracted !");
+	    			return false;
+	    		}
 	        	if(!this.portAdded(nodeConnector, portName, portNo, dpId, node)){
 	        		logger.error("NodeConnector addition failed !");
 	        		return false;
@@ -139,6 +141,12 @@ public class SwitchEventManager implements InternalModule{
 	        	break;
 
 	        case CHANGED:
+	        	/* Extract port Name */
+	    		portName = OdlUtil.getPortName(propMap);
+	    		if(portName == null){
+	    			logger.error("Port Name could not be extracted !");
+	    			return false;
+	    		}
 	        	if(!this.portModified(nodeConnector, portName, portNo, dpId, node)){
 	        		logger.error("NodeConnector modification failed !");
 	        		return false;
@@ -146,7 +154,8 @@ public class SwitchEventManager implements InternalModule{
 	        	break;
 
 	        case REMOVED:
-	        	if(!this.portDeleted(nodeConnector, portName, portNo, dpId, node)){
+	        	
+	        	if(!this.portDeleted(nodeConnector, portNo, dpId, node)){
 	        		logger.error("NodeConnector removeal failed");
 	        		return false;
 	        	}
@@ -356,10 +365,15 @@ public class SwitchEventManager implements InternalModule{
 		/* For each ports */
 		logger.info("Debug : " +"Deleting each port from Topo DB and checking if port is attached To Slice DB!");
 		for(String portName : ports){
+
+			/* Get port no */
+			logger.info("Debug : " +"Getting port details from topo DB");
+			ArrayList<Object> topoPortDetails = topoDbManager.getPort(dpId, portName);
+			String portNo = topoDbManager.extractPortNo(topoPortDetails);
 			
 			/* Delete port from topo Db */
 			logger.info("Debug : " +"Deleting port from Topo DB");
-			if(!topoDbManager.deletePort(dpId, portName)){
+			if(!topoDbManager.deletePort(dpId, portName, portNo)){
 				logger.warn("Port deletion from topo db failed for dpId: {} portName: {}", dpId, portName);
 				//continue;
 			}
@@ -647,7 +661,7 @@ public class SwitchEventManager implements InternalModule{
 		return true;
 	}
 
-	private boolean portDeleted(NodeConnector nodeConnector, String portName, String portNo, String dpId, Node node) {
+	private boolean portDeleted(NodeConnector nodeConnector, String portNo, String dpId, Node node) {
 
 		logger.info("New OpenFlow Port deleted Info has reached to VNM!");
 		
@@ -656,7 +670,7 @@ public class SwitchEventManager implements InternalModule{
 		/* Lock storage lock */
 		StorageLock.acquireLock();
 
-		ret = this._portDeleted(nodeConnector, portName, portNo, dpId, node);
+		ret = this._portDeleted(nodeConnector, portNo, dpId, node);
 		
 		/* Release storage lock */
 		StorageLock.releaseLock();
@@ -664,10 +678,18 @@ public class SwitchEventManager implements InternalModule{
 		return ret;
 	}
 	
-	private boolean _portDeleted(NodeConnector nodeConnector, String portName, String portNo, String dpId, Node node) {
+	private boolean _portDeleted(NodeConnector nodeConnector, String portNo, String dpId, Node node) {
+		
+		/* Get port name from dpID and portNo */
+		String portName = null;
+		portName = topoDbManager.getPortName(dpId, portNo);
+		if(portName == null){
+			logger.error("Port name is not registered for the dpid: {} and portNo: {}", dpId, portNo);
+			return false;
+		}
 		
 		/* Check if port is already added to topo Db */
-		logger.info("Debug : " + "Getting port from topo DB");
+		logger.info("Debug : " + "Getting port from topo DB for portName: {}", portName);
 		ArrayList<Object> port = topoDbManager.getPort(dpId, portName);
 		
 		/* Check if port is null */
@@ -678,7 +700,7 @@ public class SwitchEventManager implements InternalModule{
 		
 		/* Delete port from topo DB */
 		logger.info("Debug : " + "Deleting port from Topo DB");
-		if(!topoDbManager.deletePort(dpId, portName)){
+		if(!topoDbManager.deletePort(dpId, portName, portNo)){
 			logger.error("Port deletion from topoDb failed for port dpId: {} portName: {}", dpId, portName);
 			return false;
 		}

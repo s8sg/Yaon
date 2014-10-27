@@ -17,7 +17,7 @@ public class TopoDB {
 	private static String switchTableName = "SWITCHTABLE";
 	private static String switchPortTableName = "SWITCHPORTTABLE";
 	private static String portTableName = "PORTTABLE";
-	private static String portNametable = "PORTNAMETABLE";
+	private static String portNameTableName = "PORTNAMETABLE";
 
 	/* Private constructor should be called only from createDb() */
 	private TopoDB(DBConnection connection, HashMap<String, Table> tables){
@@ -75,8 +75,8 @@ public class TopoDB {
 		tables.put(portTableName, portTable);
 
 		/* Init PortName Table*/
-		Table portNameTable  = PortNameTable.init(connection, portNametable);
-		tables.put(portNametable, portNameTable);
+		Table portNameTable  = PortNameTable.init(connection, portNameTableName);
+		tables.put(portNameTableName, portNameTable);
 
 		/* DB is successfully created */
 		TopoDB topoDb = new TopoDB(connection, tables);
@@ -103,7 +103,7 @@ public class TopoDB {
 
 	/* Method to get PortName table */
 	private PortNameTable getPortNameTable(){
-		return (PortNameTable)tables.get(portNametable);
+		return (PortNameTable)tables.get(portNameTableName);
 	}
 
 	/* Port Specific calls */
@@ -133,6 +133,13 @@ public class TopoDB {
 		SwitchTable switchTable = getSwitchTable();
 		if(switchTable == null){
 			logger.error("Switch table is not initialized !");
+			return false;
+		}
+		
+		/* get port-Name table */
+		PortNameTable portNameTable = getPortNameTable();
+		if(portNameTable == null){
+			logger.error("Port name table is not initialized !");
 			return false;
 		}
 
@@ -181,11 +188,32 @@ public class TopoDB {
 			logger.error("Exception while getting data from Switch Port Table: {}", e);
 			return false;
 		}
-
+		
+		/* Add the port name to the PortName tabel */
+		primaryKeyValues = new ArrayList<Object>();
+		primaryKeyValues.add(dpId);
+		primaryKeyValues.add(portNo);
+		fieldsValues = new ArrayList<Object>();
+		fieldsValues.add(portName);
+		try {
+			ArrayList<ArrayList<Object>> list = portNameTable.find(primaryKeyValues, null);
+			if(list == null){
+				portNameTable.add(primaryKeyValues, fieldsValues);
+			}
+			else {
+				portNameTable.del(primaryKeyValues);
+				portNameTable.add(primaryKeyValues, fieldsValues);
+			}
+		}
+		catch(DBException e){
+			logger.error("Exception while getting data from Switch Port Table: {}", e);
+			return false;
+		}
+		
 		return ret;
 	}
 
-	public boolean deletePort(String dpId, String portName){
+	public boolean deletePort(String dpId, String portName, String portNo){
 
 		boolean ret = false;
 
@@ -202,6 +230,13 @@ public class TopoDB {
 		SwitchPortTable switchPortTable = getSwitchPortTable();
 		if(switchPortTable == null){
 			logger.error("Switch port table is not initialized !");
+			return false;
+		}
+		
+		/* Get Port Name table */
+		PortNameTable portNameTable = getPortNameTable();
+		if(portNameTable == null){
+			logger.error("Port name table is not initialized !");
 			return false;
 		}
 
@@ -251,6 +286,18 @@ public class TopoDB {
 					}
 				}
 			}
+		}
+		catch(DBException e){
+			logger.error("Exception while getting data from Switch Port Table !");
+			return false;
+		}
+		
+		/* Delete the port from portNameTable */
+		primaryKeyValues = new ArrayList<Object>();
+		primaryKeyValues.add(dpId);
+		primaryKeyValues.add(portNo);
+		try {
+			portNameTable.del(primaryKeyValues);
 		}
 		catch(DBException e){
 			logger.error("Exception while getting data from Switch Port Table !");
@@ -331,6 +378,42 @@ public class TopoDB {
 		return portList;
 	}
 
+	public String getPortName(String dpId, String portNo) {
+	
+		String portName = null;
+		
+		/* get port-Name table */	
+		PortNameTable portNameTable = getPortNameTable();
+		if(portNameTable == null){
+			logger.error("Port Name Table is NULL !");
+			return null;
+		}
+		
+		logger.info("Finding ports from Topo Db for dpId : {}", dpId);
+
+		/* Create primary key */
+		ArrayList<Object> primaryKeyValues = new ArrayList<Object>(); 
+		primaryKeyValues.add(dpId);
+		primaryKeyValues.add(portNo);
+		
+		/* Get port name from port table */
+		ArrayList<ArrayList<Object>> portNameDetails;
+		try {
+			portNameDetails = portNameTable.find(primaryKeyValues, null);
+			
+			if(portNameDetails == null) {
+				logger.error("PortName could not be extracted !");
+				return null;
+			}
+			portName = (String) portNameDetails.get(0).get(0);
+		} catch (DBException e) {
+			logger.error("Exception while getting data from Port Name Table !");
+			return null;
+		}
+		
+		return portName;
+	}
+	
 	/* Switch Specific calls */
 
 

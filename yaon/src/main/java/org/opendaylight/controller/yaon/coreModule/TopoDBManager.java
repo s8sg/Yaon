@@ -79,7 +79,7 @@ public class TopoDBManager implements InternalModule {
 		return ret;
 	}
 	
-	public boolean deletePort(String dpID, String portName){
+	public boolean deletePort(String dpID, String portName, String portNo){
 		boolean ret;
 		
 		if(dpID == null || portName == null){
@@ -88,7 +88,7 @@ public class TopoDBManager implements InternalModule {
 		}
 		
 		synchronized (topoDbLock) {
-			ret = topoDb.deletePort(dpID, portName);
+			ret = topoDb.deletePort(dpID, portName, portNo);
 		}
 		
 		return ret;
@@ -137,6 +137,27 @@ public class TopoDBManager implements InternalModule {
 		}
 		
 		return ret;
+	}
+	
+	public String getPortName(String dpId, String portNo) {
+		
+		String portName = null;
+		
+		/* Check if null argument is passed */
+		if(dpId == null || portNo == null){
+			logger.error("Null argument is passsed !");
+			return null;
+		}
+		
+		synchronized (topoDbLock) {
+			portName = topoDb.getPortName(dpId, portNo);
+			if(portName == null){
+				logger.error("No ports are found !");
+				return null;
+			}
+		}
+		
+		return portName;
 	}
 	
 	public String extractPortNo(ArrayList<Object> portDetails){
