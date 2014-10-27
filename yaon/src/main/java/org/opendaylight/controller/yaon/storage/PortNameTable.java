@@ -15,6 +15,7 @@ public class PortNameTable extends HashTable{
 	private static ArrayList<String> fieldNames = new ArrayList<String>() {{
 	    add("PORTNAME");
 	}};
+	private static int feildsNos = 1;
 	private static ArrayList<String> indexFieldsName = new ArrayList<String>(){{
 		add("DPID");
 		add("PORTNO");
@@ -23,13 +24,13 @@ public class PortNameTable extends HashTable{
 	private DBConnection connection;
 	private HashMap<String, ArrayList<Object>> table;
 
-	private PortNameTable(DBConnection conn, HashMap<String, ArrayList<Object>> table){
+	private PortNameTable(DBConnection conn, HashMap<String, ArrayList<Object>> table) {
 
 		this.table = table;
 		this.connection = conn;
 	}
 
-	public static PortNameTable init(DBConnection connection, String tableName){
+	public static PortNameTable init(DBConnection connection, String tableName) {
 
 		/* Check if null object is passed */
 		if(connection == null || tableName == null){
@@ -71,9 +72,14 @@ public class PortNameTable extends HashTable{
 			return false;
 		}
 
+		/* Check if invalid nos of arguments passed */
+		if(fieldsValues.size() != feildsNos){
+			logger.error("Invalid nos of feilds value is passed !");
+			return false;
+		}
 
 		/* generate primary key */
-		String pk = (String) primaryKeyValues.get(0);
+		String pk = (String) primaryKeyValues.get(0) + (String) primaryKeyValues.get(1);
 
 		/* Put data in Table */
 		this.table.put(pk, fieldsValues);
@@ -98,11 +104,11 @@ public class PortNameTable extends HashTable{
 		}
 
 		/* generate primary key */
-		String pk = (String) primaryKeyValues.get(0);
+		String pk = (String) primaryKeyValues.get(0) + (String) primaryKeyValues.get(1);
 
 		/* Check if table contains the value */
 		if(table.containsKey(pk)) {
-			table.remove(primaryKeyValues.get(0));
+			table.remove(pk);
 			return true;
 		}
 		return false;
@@ -125,7 +131,7 @@ public class PortNameTable extends HashTable{
 		}
 
 		/* generate primary key */
-		String pk = (String) primaryKeyValues.get(0);
+		String pk = (String) primaryKeyValues.get(0) + (String) primaryKeyValues.get(1);
 
 		ArrayList<Object> rows = table.get(pk);
 		if(rows == null){
@@ -157,7 +163,7 @@ public class PortNameTable extends HashTable{
 
 
 		/* generate primary key */
-		String pk = (String) primaryKeyValues.get(0);
+		String pk = (String) primaryKeyValues.get(0) + (String) primaryKeyValues.get(1);
 
 		/* Get List of fields */
 		ArrayList<Object> currentValues = this.table.get(pk);

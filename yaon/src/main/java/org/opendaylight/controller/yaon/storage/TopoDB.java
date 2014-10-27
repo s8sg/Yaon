@@ -242,10 +242,11 @@ public class TopoDB {
 					logger.error("Port list is NULL !");
 				}
 				else {
-					logger.error("No of ports found to be deleted is : " + portList.size());
+					//logger.error("No of ports found to be deleted is : " + portList.size());
 					for(Object port : portList){
 						if(port.equals(portName)){
 							portList.remove(port);
+							break;
 						}
 					}
 				}

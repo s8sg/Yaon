@@ -15,7 +15,8 @@ public class SwitchPortTable extends HashTable{
 	private static ArrayList<String> fieldNames = new ArrayList<String>() {{
 	    add("PORTS");
 	}};
-	private static int feildsNos = 65535;
+	/* feilds Nos not required as port no is not fixed */
+	// private static int feildsNos = 65535;   
 	private static ArrayList<String> indexFieldsName = new ArrayList<String>(){{
 		add("DPID");
 	}};
@@ -107,7 +108,7 @@ public class SwitchPortTable extends HashTable{
 
 		/* Check if table contains the value */
 		if(table.containsKey(pk)) {
-			table.remove(primaryKeyValues.get(0));
+			table.remove(pk);
 			return true;
 		}
 		return false;
