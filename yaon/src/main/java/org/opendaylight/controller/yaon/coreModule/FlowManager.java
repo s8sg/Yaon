@@ -166,7 +166,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else {
-			logger.info("Flow is successfully added : {}", drop_switch_any);
+			logger.info("Flow is successfully added : {}, details: {}", drop_switch_any, status.getDescription());
 		}
 		
 		return ret;
@@ -206,7 +206,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully added : {}", drop_port);
+			logger.info("Flow is successfully added : {} details: {}", drop_port, status.getDescription());
 		}
 		return ret;
 	}
@@ -245,7 +245,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully added : {}", drop_port);
+			logger.info("Flow is successfully added : {}, details: {}", drop_port, status.getDescription());
 		}
 		return ret;
 	}
@@ -291,7 +291,7 @@ public class FlowManager implements InternalModule{
 	        }
 		}
 		else{
-			logger.info("Flow is successfully added : {}", forward_vxlan);
+			logger.info("Flow is successfully added : {}, details: {}", forward_vxlan, status.getDescription());
 		}
 		
 		return ret;
@@ -332,7 +332,7 @@ public class FlowManager implements InternalModule{
 	       ret = false;
 	    }
 		else{
-			logger.info("Flow is successfully Deleted : {}", forward_vxlan);
+			logger.info("Flow is successfully Deleted : {}, details : {}", forward_vxlan, status.getDescription());
 		}
 		
 		return ret;
@@ -384,7 +384,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully added : {}", forward_mac);
+			logger.info("Flow is successfully added : {}, details: {}", forward_mac, status.getDescription());
 		}
 		
 		return ret;
@@ -392,7 +392,7 @@ public class FlowManager implements InternalModule{
 	
 	public boolean removeForwardinngFlow(String dpId, Node node, NodeConnector port, String portName, String MAC) {
 		
-		logger.info("Forwarding flow is being set/modify to port for DpId: {}, vxlan PortNo: {} and MAC: {}", dpId, portName, MAC);
+		logger.info("Forwarding flow is being deleted for DpId: {}, PortNo: {} and MAC: {}", dpId, portName, MAC);
 		
 		/* Max_forward_flow */
 		Flow forward_mac = new Flow();
@@ -428,7 +428,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully Deleted : {}", forward_mac);
+			logger.info("Flow is successfully Deleted : {}, details: {}", forward_mac, status.getDescription());
 		}
 		
 		return ret;
