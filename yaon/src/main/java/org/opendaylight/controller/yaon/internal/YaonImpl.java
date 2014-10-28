@@ -26,10 +26,8 @@ import org.opendaylight.controller.sal.core.NodeConnector;
 import org.opendaylight.controller.sal.core.Property;
 import org.opendaylight.controller.sal.core.UpdateType;
 import org.opendaylight.controller.sal.flowprogrammer.IFlowProgrammerService;
-import org.opendaylight.controller.sal.match.Match;
 import org.opendaylight.controller.sal.packet.IDataPacketService;
 import org.opendaylight.controller.sal.packet.IListenDataPacket;
-import org.opendaylight.controller.sal.packet.Packet;
 import org.opendaylight.controller.sal.packet.PacketResult;
 import org.opendaylight.controller.sal.packet.RawPacket;
 import org.opendaylight.controller.statisticsmanager.IStatisticsManager;
@@ -526,7 +524,7 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
 	}
 
 	@Override
-	public boolean registerAgent(String dataPathId, String agentUri) {
+	public boolean registerAgent(String dataPathId, String agentUri, String tunnelEndpoint) {
 		
 		boolean ret = false;
 		

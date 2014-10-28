@@ -24,396 +24,371 @@ public class YaonCFENorthbound {
 	private static final Logger logger = LoggerFactory
        		.getLogger(YaonCFENorthbound.class);
 
-	/*Method that recieve client restapi call for register agent  */
+	/*Method that receive client rest-api call for register agent  */
+    @Path("/agents/{dpId}")
+    @POST
+    @StatusCodes({
+    	@ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-    	@Path("/{dpId}/Agent")
-    	@POST
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    public Response registerAgent(InputStream incomingData, @PathParam(value = "dpId") String dpId) {
 
-        public Response registerAgent(InputStream incomingData,@PathParam(value = "dpId") String dpId) {
-
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        String uri = null;
+        String tunnelEndpoint = null;
+        	
+        StringBuilder str = new StringBuilder();
         
-		/*variable decleration*/
-		String uri=null;
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+            String line = null;
+            while ((line = in.readLine()) != null) {
+            	str.append(line);
+            }
+        }
+        catch(Exception e) {
+        	logger.error("Exception occurred during reading data: " + e);
+        }
+
+        /* Get json data */
+        JSONObject jsonObject = JsonParsing.Data(str);
+        uri = (String) jsonObject.get("control_uri");
+        tunnelEndpoint = (String) jsonObject.get("tunnel_endpoint");
         
-		StringBuilder str = new StringBuilder();
+        /* trimming ip and port */
+        uri = uri.substring("http://".length(), uri.length() - 1);
         
-		try {
-             		BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-                	String line = null;
-                	while ((line = in.readLine()) != null) {
-                		str.append(line);
-                	}
-        	}
-        	catch(Exception e) {
-        		logger.info("Exception occurred during reading data"+e);
-        	}
+        	
+       	logger.info("Data Received From client: " + "dpId = "+ dpId + ", AgentUri = " + uri + "and tunnel_endpoint = " + tunnelEndpoint);
 
-		/*calling json parsing method*/
-		JSONObject jsonObject = JsonParsing.Data(str);
-        	uri=(String) jsonObject.get("agent_uri");
+       	/* checking for null object */
+       	if (yaonCFEApi == null) {
+       		logger.error("YaonCFEApi object is null !");
+        }
 
-       		logger.info("Data Received From client: " +"dpId="+dpId+" AgentUri="+uri);
+       	/* call YaonCFEApi to register agent */
+       	if(yaonCFEApi.registerAgent(dpId, uri, tunnelEndpoint)) {
+          	return Response.ok(new String("Agent is registered Successfully !")).build();
+        } 
+       	else {
+         	logger.error("Agent Registration Failed !");		
+        }
 
-		/*checking for null object*/
-       		if (yaonCFEApi == null) {
-       			logger.info("YaonCFEApi object is null");
-        	}
-
-		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.registerAgent(dpId,uri)) {
-          		return Response.ok(new String("Agent Register")).build();
-        	} 
-		else {
-         		logger.info("Register Agent Failed!!!!!");
-	    		//return Response.ok(new String("Agent Register Failed!!!!")).build();
-        	}
-
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity(str.toString()).build();
-		return Response.ok(new String("Agent Register Failed!!!!")).build();
+		
+		return Response.ok(new String("Agent Registration Failed !")).build();
   	}
 
 
 
-  	/*Method that recieve client restapi call for register multicast  */
-
+  	/*Method that receive client rest-api call for register multicast  */
  	@Path("/{sliceId}/Multicast")
-    	@POST
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-        public Response registerMulticast(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
+    public Response registerMulticast(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         
-		/*variable decleration*/
-		String multicast=null;
+		String multicast = null;
         
 		StringBuilder str = new StringBuilder();
         
 		try{
-                	BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-                	String line = null;
-                	while ((line = in.readLine()) != null) {
-                		str.append(line);
-                	}
-        	}
-        	catch(Exception e){
-        		logger.info("Exception occurred during reading data"+e);
-        	}
+            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+            String line = null;
+            while ((line = in.readLine()) != null) {
+                str.append(line);
+            }
+        }
+        catch(Exception e){
+        	logger.error("Exception occurred during reading data: " + e);
+        }
 	
-		/*calling json parsing method*/
-        	JSONObject jsonObject = JsonParsing.Data(str);
-        	multicast=(String) jsonObject.get("multicast");
+		/* Get json data */
+        JSONObject jsonObject = JsonParsing.Data(str);
+        multicast = (String) jsonObject.get("multicast");
 
-       		logger.info("Data Received From Client: " +"sliceId="+sliceId+" Multicast="+multicast);
+       	logger.info("Data Received From Client: " +"sliceId="+sliceId+" Multicast="+multicast);
 
 		/*checking for null object*/
-         	if (yaonCFEApi == null) {
-           		logger.info("YaonCFEApi object is null");
-        	}
+        if (yaonCFEApi == null) {
+           	logger.error("YaonCFEApi object is null !");
+        }
 
-		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.registerMulticast(sliceId,multicast)){
-          		return Response.ok(new String("Multicast Added")).build();
-        	}
+		/* call YaonCFEApi */
+       	if(yaonCFEApi.registerMulticast(sliceId,multicast)){
+          	return Response.ok(new String("Multicast is added successfully !")).build();
+        }
 		else {
-            		logger.info("Register Multicast Failed!!!!");
-	    		//return Response.ok(new String("Register Multicast Failed!!!!")).build();
+            logger.error("Multicast Registration Failed !!");
 		}
 
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity(str.toString()).build();
-		return Response.ok(new String("Register Multicast Failed!!!!")).build();
+		return Response.ok(new String("Multicast addition Failed !")).build();
  	}
 
 
 
-  	/*Method that recieve client restapi call for add slice  */
+  	/*Method that receive client rest-api call for add slice  */
 
-    	@Path("/Slice")
-    	@POST
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/Slice")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-     	public Response addSlice(InputStream incomingData) {
+    public Response addSlice(InputStream incomingData) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 	
-		/*variable decleration*/
 		String sliceId=null;
-        	String des=null;
+        String des = null;
         
 		StringBuilder str = new StringBuilder();
         
 		try{
-                	BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-                	String line = null;
-                	while ((line = in.readLine()) != null) {
-                		str.append(line);
-                	}
-        	}
-        	catch(Exception e){
-        		logger.info("Exception occurred during reading data"+e);
-        	}
+			BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+            String line = null;
+            while ((line = in.readLine()) != null) {
+            	str.append(line);
+            }
+        }
+        catch(Exception e){
+        	logger.info("Exception occurred during reading data: " + e);
+        }
 	
-		/*calling json parsing method*/
-        	JSONObject jsonObject = JsonParsing.Data(str);
-        	sliceId=String.valueOf((Long) jsonObject.get("id"));
-        	des=(String) jsonObject.get("description");
+		/* calling json parsing method */
+        JSONObject jsonObject = JsonParsing.Data(str);
+        sliceId = String.valueOf((Long) jsonObject.get("id"));
+        des = (String) jsonObject.get("description");
 
-       		logger.info("Data Received From Client: " +"sliceId="+sliceId+" Description="+des);
+       	logger.error("Data Received From Client: " +"sliceId="+sliceId+" Description="+des);
 
-		/*checking for null object*/
+		/* checking for null object */
 		if (yaonCFEApi == null) {
-           		logger.info("YaonCFEApi object is null");
-        	}
+           	logger.error("YaonCFEApi object is null !");
+        }
 
-		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.addSlice(sliceId,des)){
-          		return Response.ok(new String("Slice Added")).build();
-        	}
+		/* call YaonCFEApi */
+       	if(yaonCFEApi.addSlice(sliceId,des)){
+          	return Response.ok(new String("Slice is added successfuly !")).build();
+        }
 		else{
-            		logger.info("Add Slice Failed!!!!! ");
-	    		//return Response.ok(new String("Add Slice Failed!!!!")).build();
-        	}
+        	logger.error("Slice addition Failed !");
+        }
 
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity(str.toString()).build();
-		return Response.ok(new String("Add Slice Failed!!!!")).build();
+		
+		return Response.ok(new String("Slice addition Failed !")).build();
 	}
 
 
 
-    	/*Method that recieve client restapi call for add ports  */
+    /*Method that receive client rest-api call for add ports  */
 
-    	@Path("/{sliceId}/Ports")
-    	@POST
-    	@StatusCodes({
-               	@ResponseCode(code = 200, condition = "Destination reachable"),
-               	@ResponseCode(code = 503, condition = "Internal error"),
-               	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/{sliceId}/Ports")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-     	public Response addPort(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
+    public Response addPort(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         
-		/*variable decleration*/
-		String portId=null;
-        	String desc=null;
-        	String dpId=null;
-        	String portName=null;
-        	String vlan=null;
+		String portId = null;
+        String desc = null;
+        String dpId = null;
+        String portName = null;
+        String vlan = null;
         
 		StringBuilder str = new StringBuilder();
         
 		try{
-            		BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-            		String line = null;
-            		while ((line = in.readLine()) != null){
-                		str.append(line);
-            		}
-        	}
-        	catch (Exception e) {
-            		logger.info("Exception occurred during reading data"+e);
-        	}
+            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+            String line = null;
+            while ((line = in.readLine()) != null){
+            	str.append(line);
+            }
+        }
+        catch (Exception e) {
+            logger.error("Exception occurred during reading data: " + e);
+        }
 
 		/*calling json parsing method*/
-       		JSONObject jsonObject = JsonParsing.Data(str);
-        	portId=String.valueOf((Long) jsonObject.get("id"));
-        	dpId=(String) jsonObject.get("datapath_id");
-        	portName=(String) jsonObject.get("name");
-        	vlan=String.valueOf((Long) jsonObject.get("vid"));
-        	desc=(String) jsonObject.get("description");
+       	JSONObject jsonObject = JsonParsing.Data(str);
+        portId = String.valueOf((Long) jsonObject.get("id"));
+        dpId = (String) jsonObject.get("datapath_id");
+        portName = (String) jsonObject.get("name");
+        vlan = String.valueOf((Long) jsonObject.get("vid"));
+        desc = (String) jsonObject.get("description");
 
 
-      		logger.info("Data Received From Client: " +"sliceId="+sliceId+"|| Port ID="+portId+"|| DataPath Id="+dpId+"|| Port Name= "+portName+"|| vlan="+vlan+"|| Description="+desc);
+      	logger.info("Data Received From Client: " + "sliceId= " + sliceId + ", Port ID=" + portId +", DataPath Id=" + dpId + ", Port Name= " + portName + ", vlan=" + vlan + ", Description=" + desc);
 
 		/*checking for null object*/
 		if (yaonCFEApi == null){
-           		logger.info("YaonCFEApi object is null");
-        	}
+           	logger.error("YaonCFEApi object is null !");
+        }
 
 		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.addPort(sliceId,portId,dpId,portName,vlan,desc)){
-          		return Response.ok(new String("Port Added")).build();
-        	} 
+       	if(yaonCFEApi.addPort(sliceId,portId,dpId,portName,vlan,desc)){
+          	return Response.ok(new String("Port is added successfully !")).build();
+        } 
 		else{
-            		logger.info("Add Port Failed!!!! ");
-	    		//return Response.ok(new String("Add Port Failed!!!!")).build();
-        	}
-
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity(str.toString()).build();
-		return Response.ok(new String("Add Port Failed!!!!")).build();
+            logger.error("Port addition Failed !");
+	    }
+       	
+		return Response.ok(new String("Port addition Failed !")).build();
 	}
 
 
 
-    	/*Method that recieve client restapi call for add mac  */
+    /*Method that recieve client restapi call for add mac  */
 
-    	@Path("/{sliceId}/Ports/{portId}/MAC")
-    	@POST
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/{sliceId}/Ports/{portId}/MAC")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-     	public Response addMac(InputStream incomingData,@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
+    public Response addMac(InputStream incomingData,@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
         
-		/*variable decleration*/
 		String mac=null;
 
-        	StringBuilder str = new StringBuilder();
-        	try{
-            		BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
-            		String line = null;
-            		while ((line = in.readLine()) != null){
-                		str.append(line);
-            		}
-        	}
-        	catch(Exception e){
-        		logger.info("Exceptoin occurred during reading data"+e);
-        	}
+        StringBuilder str = new StringBuilder();
+        try{
+            BufferedReader in = new BufferedReader(new InputStreamReader(incomingData));
+            String line = null;
+            while ((line = in.readLine()) != null){
+                str.append(line);
+            }
+        }
+        catch(Exception e){
+        	logger.error("Exceptoin occurred during reading data : " + e);
+        }
 
 		/*calling json parsing method*/
-        	JSONObject jsonObject = JsonParsing.Data(str);
-        	mac=(String) jsonObject.get("address");
+        JSONObject jsonObject = JsonParsing.Data(str);
+        mac=(String) jsonObject.get("address");
 
-        	logger.info("Data Received From Client: " +"sliceId="+sliceId+"|| portId="+portId+"|| address="+mac);
+        logger.info("Data Received From Client: " +"sliceId="+sliceId+"|| portId="+portId+"|| address="+mac);
 
 		/*checking for null object*/
-        	if (yaonCFEApi == null)	{
-           		logger.info("YaonCFEApi object is null");
-        	}
+        if (yaonCFEApi == null)	{
+        	logger.error("YaonCFEApi object is null !");
+        }
 
 		/*call YaonCFEApi inteface*/
-        	if(yaonCFEApi.addMac(sliceId,portId,mac)) {
-          		return Response.ok(new String("MAC Added")).build();
-        	} 
+        if(yaonCFEApi.addMac(sliceId,portId,mac)) {
+        	return Response.ok(new String("MAC is added successfully !")).build();
+        } 
 		else {
-            		logger.info("Add MAC Failed!!!! ");
-	    		//return Response.ok(new String("MAC Add Failed!!!!")).build();
- 		}
+        	logger.error("MAC addition failed !");
+	    }
 
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity(str.toString()).build();
-		return Response.ok(new String("MAC Add Failed!!!!")).build();
+		return Response.ok(new String("MAC addition failed !")).build();
   	}
 
 
 
   	/*Method that recieve client restapi call for delete slice  */
 
-    	@Path("/{sliceId}")
-    	@DELETE
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/{sliceId}")
+    @DELETE
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-      	public Response deleteSlice(@PathParam(value = "sliceId") String sliceId) {
+    public Response deleteSlice(@PathParam(value = "sliceId") String sliceId) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 
 		/*checking for null object*/
-        	if (yaonCFEApi == null){
-        		logger.info("YaonCFEApi object is null");
-        	}
-
-        	// return HTTP response 200 in case of success
+        if (yaonCFEApi == null){
+        	logger.info("YaonCFEApi object is null !");
+        }
 
 		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.deleteSlice(sliceId)) {
-          		return Response.ok(new String("slice Deleted")).build();
-        	} 
+       	if(yaonCFEApi.deleteSlice(sliceId)) {
+          	return Response.ok(new String("slice Deleted")).build();
+        } 
 		else{
-            		logger.info("Slice Deletion Failed!!!!");
-	    		//return Response.ok(new String("Slice Deletion Failed!!!!")).build();
-        	}
+            logger.info("Slice Deletion Failed !");
+        }
 
-        	//return Response.status(200).entity("reachable").build();
-		return Response.ok(new String("Slice Deletion Failed!!!!")).build();
+		return Response.ok(new String("Slice Deletion Failed !")).build();
    	}
 
 
 
    	/*Method that recieve client restapi call for delete ports  */
 
-    	@Path("/{sliceId}/Ports/{portId}")
-    	@DELETE
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/{sliceId}/Ports/{portId}")
+    @DELETE
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-      	public Response deletePort(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
+    public Response deletePort(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 
 		/*checking for null object*/
-        	if (yaonCFEApi == null){
-           		logger.info("YaonCFEApi object is null");
-        	}
+        if (yaonCFEApi == null){
+           	logger.error("YaonCFEApi object is null !");
+        }
 
 		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.deletePort(sliceId,portId)){
-          		return Response.ok(new String("Port Deleted")).build();
+       	if(yaonCFEApi.deletePort(sliceId,portId)){
+          	return Response.ok(new String("Port is deleted successfully !")).build();
  		} 
 		else{
-            		logger.info("Port Deletion Failed!!!! ");
-	    		//return Response.ok(new String("Port Deletion Failed!!!!")).build();
-        	}
+            logger.error("Port Deletion Failed !");
+        }
 
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity("reachable").build();
-		return Response.ok(new String("Port Deletion Failed!!!!")).build();
-    	}
+		return Response.ok(new String("Port Deletion Failed !")).build();
+    }
 
 
   
   	/*Method that recieve client restapi call for delete mac  */
   
-    	@Path("/{sliceId}/Ports/{portId}/MAC/{MAC}")
-    	@DELETE
-    	@StatusCodes({
-        	@ResponseCode(code = 200, condition = "Destination reachable"),
-        	@ResponseCode(code = 503, condition = "Internal error"),
-        	@ResponseCode(code = 503, condition = "Destination unreachable") })
+    @Path("/{sliceId}/Ports/{portId}/MAC/{MAC}")
+    @DELETE
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
 
-      	public Response deleteMac(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId,@PathParam(value = "MAC") String MAC) {
+    public Response deleteMac(@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId,@PathParam(value = "MAC") String MAC) {
 
-        	YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
 
 		/*checking for null object*/
-        	if (yaonCFEApi == null){
-           		logger.info("YaonCFEApi object is null");
-        	}
+        if (yaonCFEApi == null){
+           	logger.error("YaonCFEApi object is null !");
+        }
 
 		/*call YaonCFEApi inteface*/
-       		if(yaonCFEApi.deleteMac(sliceId,portId,MAC)){
-        		return Response.ok(new String("MAC Deleted")).build();
-        	} 
+       	if(yaonCFEApi.deleteMac(sliceId,portId,MAC)){
+        	return Response.ok(new String("MAC is deleted successfully !")).build();
+        } 
 		else{
-            		logger.info("MAC Deletion Failed!!!!! ");
-	    		//return Response.ok(new String("MAC Deletion Failed!!!!")).build();
-        	}
+            logger.error("MAC Deletion Failed !");
+        }
 
-		// return HTTP response 200 in case of success
-        	//return Response.status(200).entity("reachable").build();
-		return Response.ok(new String("MAC Deletion Failed!!!!")).build();
-    	}
+		return Response.ok(new String("MAC Deletion Failed !")).build();
+    }
 
 
 }

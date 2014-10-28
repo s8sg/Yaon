@@ -5,10 +5,7 @@ import java.util.HashMap;
 
 import org.opendaylight.controller.sal.core.Node;
 import org.opendaylight.controller.sal.core.NodeConnector;
-import org.opendaylight.controller.yaon.storage.SliceDB;
 import org.opendaylight.controller.yaon.storage.StorageLock;
-import org.opendaylight.controller.yaon.storage.TopoDB;
-import org.opendaylight.controller.yaon.util.OdlUtil;
 import org.opendaylight.controller.yaon.util.YaonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1413805646297
+Bnd-LastModified: 1414486500369
 Build-Jdk: 1.7.0_60
 Built-By: SDN-ODL
 Bundle-ManifestVersion: 2
@@ -13,17 +13,17 @@ Export-Package: org.opendaylight.controller.yaon.yaonCFENorthbound;versi
 Import-Package: org.opendaylight.controller.yaon.yaonCFE,org.opendayligh
  t.controller.sal.utils;version="[0.9,1)",javax.ws.rs;version="[1.1,2)",
  javax.ws.rs.core;version="[1.1,2)",org.slf4j;version="[1.7,2)",org.json
- .simple.parser;version="[1.1,2)",org.json.simple;version="[1.1,2)",org.
- opendaylight.controller.northbound.commons.utils;version="[0.4,1)",com.
- fasterxml.jackson.jaxrs.json;version="[2.3,3)",javax.xml.bind,com.faste
- rxml.jackson.jaxrs.base;version="[2.3,3)",com.sun.jersey.spi.container.
- servlet;version="[1.17,2)",org.opendaylight.controller.northbound.commo
- ns;version="[0.4,1)",org.apache.commons.logging,org.opendaylight.yang.g
- en.v1.urn.ietf.params.xml.ns.yang.ietf.inet.types.rev100924,org.apache.
- catalina.filters;version="[7.0,8)",javax.xml.bind.annotation,org.openda
- ylight.controller.sal.packet.address;version="[0.9,1)",org.opendaylight
- .controller.northbound.commons.exception;version="[0.4,1)",org.opendayl
- ight.controller.sal.authorization;version="[0.9,1)"
+ .simple.parser;version="[1.1,2)",org.json.simple;version="[1.1,2)",java
+ x.xml.bind,org.opendaylight.controller.sal.packet.address;version="[0.9
+ ,1)",org.opendaylight.yang.gen.v1.urn.ietf.params.xml.ns.yang.ietf.inet
+ .types.rev100924,org.apache.catalina.filters;version="[7.0,8)",org.open
+ daylight.controller.northbound.commons.exception;version="[0.4,1)",org.
+ apache.commons.logging,com.fasterxml.jackson.jaxrs.json;version="[2.3,3
+ )",com.sun.jersey.spi.container.servlet;version="[1.17,2)",org.opendayl
+ ight.controller.sal.authorization;version="[0.9,1)",org.opendaylight.co
+ ntroller.northbound.commons.utils;version="[0.4,1)",org.opendaylight.co
+ ntroller.northbound.commons;version="[0.4,1)",javax.xml.bind.annotation
+ ,com.fasterxml.jackson.jaxrs.base;version="[2.3,3)"
 Originally-Created-By: Apache Maven Bundle Plugin
 Tool: Bnd-2.1.0.20130426-122213
 Web-ContextPath: /Yaon

@@ -7,21 +7,15 @@ import java.util.List;
 import org.opendaylight.controller.forwardingrulesmanager.FlowEntry;
 import org.opendaylight.controller.forwardingrulesmanager.IForwardingRulesManager;
 import org.opendaylight.controller.sal.action.Action;
-import org.opendaylight.controller.sal.action.ActionType;
 import org.opendaylight.controller.sal.action.Drop;
 import org.opendaylight.controller.sal.action.Output;
-import org.opendaylight.controller.sal.action.PopVlan;
-import org.opendaylight.controller.sal.core.Actions;
 import org.opendaylight.controller.sal.core.Node;
 import org.opendaylight.controller.sal.core.NodeConnector;
 import org.opendaylight.controller.sal.flowprogrammer.Flow;
-import org.opendaylight.controller.sal.flowprogrammer.IFlowProgrammerService;
 import org.opendaylight.controller.sal.match.Match;
 import org.opendaylight.controller.sal.match.MatchField;
 import org.opendaylight.controller.sal.match.MatchType;
 import org.opendaylight.controller.sal.utils.Status;
-import org.opendaylight.controller.yaon.storage.TopoDB;
-import org.opendaylight.controller.yaon.util.OdlUtil;
 import org.opendaylight.controller.yaon.util.YaonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +28,6 @@ public class FlowManager implements InternalModule{
 
 	/* Internal Project Globals */
 	private IForwardingRulesManager forwardingRulesManager = null;
-	private TopoDB topoTree = null;
 	
 	/* Internal global values */
 	private String invalidMac = "000000000000";
@@ -46,7 +39,7 @@ public class FlowManager implements InternalModule{
 	private short switch_drop_priority = 512;
 	private short port_drop_priority = 2000;
 	private short forward_priority = 4096;
-	private static long flowId = 1;
+	
 	/* Initializing Functions */
 	@Override
 	public boolean initiateServicesDepedency(ServiceHolder services) {	

@@ -22,7 +22,7 @@ public interface YaonCFEApi {
 	public boolean deleteMac(String sliceId, String portId, String MAC);
 
 	/* Interface To Register an Agent URI for a Specific Switch */
-	public boolean registerAgent(String dataPathId, String agentUri);
+	public boolean registerAgent(String dataPathId, String agentUri, String tunnelEndpoint);
 
 	/* Interface to Register an Multicast for a Specific Slice */
 	public boolean registerMulticast(String sliceId, String multicast);

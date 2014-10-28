@@ -62,7 +62,7 @@ public class Activator extends ComponentActivatorAbstractBase {
      */
     @Override
 	public Object[] getImplementations() {
-    	logger.info("Bundle getting Virtual Network Manager implementation info!");
+    	logger.debug("Bundle getting YAON implementation info!");
         Object[] res = { YaonImpl.class};
         return res;
     }
@@ -85,13 +85,13 @@ public class Activator extends ComponentActivatorAbstractBase {
 
         if (imp.equals(YaonImpl.class)) {
 
-        	logger.info("Exporting the YAON services");
+        	logger.debug("Exporting the YAON services");
 
         	Dictionary<String, String> props = new Hashtable<String, String>();
         	props.put("salListenerName", "YAON");
         	c.setInterface(new String[] { IYaonService.class.getName(), IInventoryListener.class.getName(), IListenDataPacket.class.getName()}, props);
 
-            logger.info("Registering dependent services");
+            logger.debug("Registering dependent services");
 
             c.add(createContainerServiceDependency(containerName).setService(
                     ISwitchManager.class).setCallbacks("setSwitchManager",
