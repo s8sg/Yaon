@@ -529,6 +529,24 @@ public class SliceManager implements InternalModule{
 					logger.info("Debug : " + "Port is not added in topo DB");
 				}
 			}
+			
+			/* XXX :  Need to be verified */ 
+			/* Modify vxlan port flow */
+			logger.info("Debug : " + "Getting all port in same slice and same DP");
+			/* Get all port in the slice and in same DP */
+			ArrayList<ArrayList<Object>> allPorts = sliceDbManager.getAllPortInSliceDp(sliceId, dataPathId);
+			
+			/* Extract node connector */
+			/* generate NodeConnector Array */
+			logger.info("Debug : " + "Generating node connector array from all ports details");
+			nodeConnActivePorts = getNodeConnectorArrayFromSlicePortDetails(dataPathId, allPorts);
+			
+			/* Add vxlan port Flow */
+			logger.info("Debug : " + " Setting vxlan flow ");
+			if(!flowManager.setAndVerifyVxlanDefaultFlow(dataPathId, switchNode, vxlanPortNo, vxlanNodeConn, nodeConnActivePorts)){
+				logger.error("Vxlan port flow could not be modified for vxlan: {} ", vxlanPortName);
+				return false;
+			}
 		}
 		
 		

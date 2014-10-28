@@ -36,9 +36,9 @@ public class Activator extends ComponentActivatorAbstractBase {
     public void start(BundleContext context) {
     	// TODO Auto-generated method stub
     	super.start(context);
-    	logger.error("start method of yaon activator call");
+    	logger.info("start method of yaon activator call");
     	context.registerService(YaonCFEApi.class.getName(), service, null);
-    	logger.error("start method of yaon activator call and registered");
+    	logger.info("start method of yaon activator call and registered");
 
     }
     /**
