@@ -94,6 +94,7 @@ public class FlowManager implements InternalModule{
 		drop_switch_src_1.setActions(actions);
 		drop_switch_src_1.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
+		/*** TODO: mac is not being added in the flow */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_src_1, node));
 		if (!status.isSuccess()) {
@@ -117,6 +118,7 @@ public class FlowManager implements InternalModule{
 		drop_switch_src_2.setActions(actions);
 		drop_switch_src_2.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
+		/*** TODO: mac is not being added in the flow */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_src_2, node));
 		if (!status.isSuccess()) {
@@ -140,6 +142,7 @@ public class FlowManager implements InternalModule{
 		drop_switch_dst.setActions(actions);
 		drop_switch_dst.setPriority((short)switch_drop_priority);
 		/* Add Flow to switch */
+		/*** TODO: mac is not being added in the flow */
 		/*
 		status = forwardingRulesManager.modifyOrAddFlowEntry(new FlowEntry(defaultSwitchDropFlows, flowName, drop_switch_dst, node));
 		if (!status.isSuccess()) {
@@ -170,8 +173,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else {
-			logger.info("Flow is successfully added : {}",
-            		drop_switch_any);
+			logger.info("Flow is successfully added : {}", drop_switch_any);
 		}
 		
 		return ret;
@@ -211,8 +213,7 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully added : {}",
-            		drop_port);
+			logger.info("Flow is successfully added : {}", drop_port);
 		}
 		return ret;
 	}
@@ -251,15 +252,14 @@ public class FlowManager implements InternalModule{
             ret = false;
         }
 		else{
-			logger.info("Flow is successfully added : {}",
-            		drop_port);
+			logger.info("Flow is successfully added : {}", drop_port);
 		}
 		return ret;
 	}
 	
 	public boolean setAndVerifyVxlanDefaultFlow(String dpId, Node node, String vxlanPortNo, NodeConnector vxlanPort, List<NodeConnector> otherPorts){
 
-		logger.info("Default flow is being set/modify to vxlan port for DpId: {} vxlan PortNo: {}", dpId, vxlanPortNo);
+		logger.info("Default flow is being set/modify to vxlan port for DpId: {} vxlan PortNo: {} and otherPorts: {}", dpId, vxlanPortNo, otherPorts);
 		
 		/* vxlanPort_forward_flow */
 		Flow forward_vxlan = new Flow();
@@ -296,6 +296,9 @@ public class FlowManager implements InternalModule{
 	            		forward_vxlan, status.getDescription());
 	            ret = false;
 	        }
+		}
+		else{
+			logger.info("Flow is successfully added : {}", forward_vxlan);
 		}
 		
 		return ret;
@@ -335,6 +338,9 @@ public class FlowManager implements InternalModule{
 	       forward_vxlan, status.getDescription());
 	       ret = false;
 	    }
+		else{
+			logger.info("Flow is successfully Deleted : {}", forward_vxlan);
+		}
 		
 		return ret;
 	}
@@ -358,6 +364,7 @@ public class FlowManager implements InternalModule{
 		/* Create Match */
 		match = new Match();
 		match.setField(new MatchField(MatchType.IN_PORT, port));
+		/*** TODO: mac is not being added in the flow */
 		//match.setField(new MatchField(MatchType.DL_SRC, OdlUtil.generateBytesForMac(MAC)));
 		/* Create actions */
 		actions = new ArrayList<Action>();
@@ -383,6 +390,9 @@ public class FlowManager implements InternalModule{
             		forward_mac, status.getDescription());
             ret = false;
         }
+		else{
+			logger.info("Flow is successfully added : {}", forward_mac);
+		}
 		
 		return ret;
 	}
@@ -424,6 +434,9 @@ public class FlowManager implements InternalModule{
             		forward_mac, status.getDescription());
             ret = false;
         }
+		else{
+			logger.info("Flow is successfully Deleted : {}", forward_mac);
+		}
 		
 		return ret;
 	}

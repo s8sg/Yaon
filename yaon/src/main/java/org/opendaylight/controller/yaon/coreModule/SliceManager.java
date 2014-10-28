@@ -212,6 +212,13 @@ public class SliceManager implements InternalModule{
 			return false;
 		}
 		
+		logger.info("Debug : " + "Checking if agent is registered for the Dpid ");
+		String agentUri = sliceDbManager.getAgentUri(dataPathId);
+		if(agentUri == null){
+			logger.error("Configuration is incomplete, No agent is registered for doId: {}", dataPathId);
+			return false;
+		}
+		
 		/* Generate vxlan port name */
 		String vxlanPortName = YaonUtil.generateVxlanPortName(sliceId);
 		logger.info("Debug : " + "Generated vxlan port name: " + vxlanPortName);
@@ -243,7 +250,7 @@ public class SliceManager implements InternalModule{
 			
 			logger.info("Debug : " + "Getting agent uri for the dpId");
 			/* Get agent uri */
-			String agentUri = sliceDbManager.getAgentUri(dataPathId);
+			agentUri = sliceDbManager.getAgentUri(dataPathId);
 			if(agentUri == null){
 				logger.error("Agent uri is not set for dataPath: {}", dataPathId);
 				return false;

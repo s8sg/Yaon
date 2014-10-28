@@ -262,7 +262,7 @@ public class TopoDB {
 		try {
 			ret = portTable.del(primaryKeyValues);
 		} catch (DBException e) {
-			logger.error("Exception while getting data from Port Table !");
+			logger.error("Exception while Deleting data from Port Table !");
 			return false;
 		}
 
