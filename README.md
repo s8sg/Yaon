@@ -31,3 +31,4 @@ Internally Yaon plugin has different sub components according to their functiona
 
 **6>	Agent Manager:** Manages agents calls
 
+![](https://github.com/cosanti/Yaon/blob/master/Doc/YAON%20arcitecture.jpg)
