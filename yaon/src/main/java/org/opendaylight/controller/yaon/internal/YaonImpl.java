@@ -17,6 +17,7 @@
 
 package org.opendaylight.controller.yaon.internal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -563,6 +564,25 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
 		}
 		
 		return ret;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getSlicesInfo() {
+		
+		return null;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getPortsInfo(String sliceId) {
+		
+		return null;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getMacsInfo(String sliceId,
+			String portId) {
+		
+		return null;
 	}
 
 }
