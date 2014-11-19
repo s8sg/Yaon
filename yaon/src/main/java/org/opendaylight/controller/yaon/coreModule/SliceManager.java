@@ -146,7 +146,40 @@ public class SliceManager implements InternalModule{
 		return true;
 	}
 	
+	/* Get all slices details */
+    public ArrayList<ArrayList<String>> getAllSlices() {
+		
+		logger.info("Processing Slice Get Info Request ");
 	
+		ArrayList<ArrayList<String>> ret = null;
+		
+		/* Lock storage lock */
+		StorageLock.acquireLock();
+		
+		ret = _getAllSlices();
+		
+		/* release Storage lock */
+		StorageLock.releaseLock();
+			
+		return ret;
+	}
+	
+    
+    public ArrayList<ArrayList<String>> _getAllSlices() {
+    	
+    	ArrayList<ArrayList<String>> slicesInfos = null;
+    	
+    	logger.info("Debug : " + "Getting all the slices from ");
+		/* Check if port with same name already exist */
+    	slicesInfos = sliceDbManager.getAllSlicesInfo();
+		if(slicesInfos == null){
+			logger.info("No slice is already added");
+			return null;
+		}
+		
+		return slicesInfos;
+    }
+    
 	/* Add port to a specific switch for a slice */
 	public boolean addPort(String SliceId, String portId, String dataPathId, String portName, String vlan, String desc){
 		
@@ -554,11 +587,42 @@ public class SliceManager implements InternalModule{
 				logger.warn("Vxlan port could not be found in TopoDb - vxlan flow could not be modified");
 			}
 		}
-		
-		
-		
+			
 		return true;
 	}
+	
+	/* Get all ports info */
+	public ArrayList<ArrayList<String>> getAllPorts(String sliceId){
+		
+		logger.info("Processing port Get Info Request ");
+		
+		ArrayList<ArrayList<String>> ret = null;
+		
+		/* Lock storage lock */
+		StorageLock.acquireLock();
+		
+		ret = _getAllPorts(sliceId);
+		
+		/* release Storage lock */
+		StorageLock.releaseLock();
+			
+		return ret;
+	}
+	
+    public ArrayList<ArrayList<String>> _getAllPorts(String sliceId) {
+    	
+    	ArrayList<ArrayList<String>> allPortsInfos = null;
+    	
+    	logger.info("Debug : " + "Getting all the slices from ");
+		/* Check if port with same name already exist */
+    	allPortsInfos = sliceDbManager.getAllPortsInfos(sliceId);
+		if(allPortsInfos == null){
+			logger.info("No port is already added");
+			return null;
+		}
+		
+		return allPortsInfos;
+    }
 
 	/* Add MAC for a port in slice */
 	public boolean addMac(String sliceId, String portId, String MAC){
@@ -736,6 +800,37 @@ public class SliceManager implements InternalModule{
 		
 		return true;
 	}
+	
+	/* Get all ports info */
+	public ArrayList<ArrayList<String>> getAllMacs(String sliceId, String portId){
+		
+		logger.info("Processing port Get Info Request ");
+		
+		ArrayList<ArrayList<String>> ret = null;
+		
+		/* Lock storage lock */
+		StorageLock.acquireLock();
+		
+		ret = _getAllMacs(sliceId, portId);
+		
+		/* release Storage lock */
+		StorageLock.releaseLock();
+			
+		return ret;
+	}
+	
+    public ArrayList<ArrayList<String>> _getAllMacs(String sliceId, String portId) {
+    	
+    	ArrayList<ArrayList<String>> allPortsInfos = null;
+    	
+    	allPortsInfos = sliceDbManager.getAllMacsInfos(sliceId, portId);
+		if(allPortsInfos == null){
+			logger.info("No port is already added");
+			return null;
+		}
+		
+		return allPortsInfos;
+    }
 	
 	/* Add Agent to a specific switch */
 	public boolean addAgent(String dataPathId, String agentUri){

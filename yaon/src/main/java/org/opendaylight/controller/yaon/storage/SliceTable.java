@@ -148,7 +148,7 @@ public class SliceTable extends DBTable {
 			return null;
 		}
 
-		/* Delete from the table */
+		/* Find from the table */
 		try {
 			/* Begin Transaction */
 			((SqlJetDb) connection.getConnection()).beginTransaction(SqlJetTransactionMode.WRITE);
@@ -183,6 +183,39 @@ public class SliceTable extends DBTable {
 		return listOfRows;
 	}
 
+	public ArrayList<ArrayList<Object>> findAll() throws DBException {
+		
+		ArrayList<ArrayList<Object>> listOfRows= new ArrayList<ArrayList<Object>>();
+		
+		/* Find from the table */
+		try {
+			/* Begin Transaction */
+			((SqlJetDb) connection.getConnection()).beginTransaction(SqlJetTransactionMode.WRITE);
+			/* Get cursor */
+			ISqlJetCursor cursor = table.open();
+			/* Create and add values to ListOfRows */
+			if (!cursor.eof()) {
+	             do {
+	                 ArrayList<Object> feildsValues = new ArrayList<Object>();
+	                 /* Get the values */
+	                 feildsValues.add(cursor.getString("SLICEID"));
+	                 feildsValues.add(cursor.getString("DESC"));
+	                 /* Add it to the ListOfRows */
+	                 listOfRows.add(feildsValues);
+	             } while(cursor.next());
+	        }else {
+				logger.info("No feilds found !");
+				return null;
+			}	
+		}
+		catch (SqlJetException e) {
+			logger.error("Exception while finding data from Table");
+			throw new DBException("Exception while finding data from Table" , e);
+		}
+
+		return listOfRows;
+	}
+	
 	@Override
 	public boolean update(ArrayList<Object> primaryKeyValues,
 			ArrayList<Object> fieldsName, ArrayList<Object> fieldsValue) throws DBException {

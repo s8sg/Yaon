@@ -220,6 +220,34 @@ public class SliceDBManager implements InternalModule{
 		
 		return allMacs;
 	}
+	
+	/* Method to get Macs by port from SliceDb */
+	public ArrayList<ArrayList<String>> getAllMacsInfos(String sliceid, String portid) {
+		
+		ArrayList<ArrayList<String>> allMacs = null;
+
+		/* Check if null argument is passed */
+		if(sliceid == null|| portid == null){
+			logger.error("Null Argument is passed !");
+			return null;
+		}
+
+		ArrayList<ArrayList<Object>> alldetails = sliceDb.getMacs(sliceid, portid);
+		if(alldetails == null){
+			return null;
+		}
+		else {
+			allMacs = new ArrayList<ArrayList<String>>();
+			for(ArrayList<Object> macDetails : alldetails){
+				ArrayList<String> macData = new ArrayList<String>();
+				macData.add((String) macDetails.get(2));   // MAC
+				macData.add((String) macDetails.get(3));   // State
+				allMacs.add(macData);
+			}
+		}
+		
+		return allMacs;
+	}
 
 	/* Method to delete mac from SliceDb */
 	public boolean deleteMac(String sliceid, String  portid, String mac) {
@@ -254,6 +282,29 @@ public class SliceDBManager implements InternalModule{
 
 
 	/*** Methods foe slice ***/
+	
+	/* Method to get all the slices info */
+	public ArrayList<ArrayList<String>> getAllSlicesInfo() {
+		
+		ArrayList<ArrayList<Object>> details = null;
+		ArrayList<ArrayList<String>> allSlicesInfo = null;
+		
+		details = sliceDb.getAllSlices();
+		if(details != null){
+			allSlicesInfo = new ArrayList<ArrayList<String>>();
+			for(ArrayList<Object> sliceInfos : details){
+				ArrayList<String> feildsValues = new ArrayList<String>();
+				feildsValues.add((String)sliceInfos.get(0)); // Slice ID
+				feildsValues.add((String)sliceInfos.get(1)); // Desc
+				allSlicesInfo.add(feildsValues);
+			}
+		}
+		else{
+			return null;
+		}
+		
+		return allSlicesInfo;
+	}
 	
 	/* Method to get slice from SliceDb */
 	public ArrayList<Object> getSlice(String sliceid) {
@@ -328,6 +379,39 @@ public class SliceDBManager implements InternalModule{
 		alldetails = sliceDb.getPortsForSlice(sliceid);
 		
 		return alldetails;
+	}
+	
+	/* Method to get port for slice from SliceDb */
+	public ArrayList<ArrayList<String>> getAllPortsInfos(String sliceid) {
+		
+		ArrayList<ArrayList<Object>> details = null;
+		ArrayList<ArrayList<String>> allPortsInfos = null;
+
+		/* Check if null argument is passed */
+		if(sliceid == null){
+			logger.error("Null Argument is passed !");
+			return null;
+		}
+
+		details = sliceDb.getPortsForSlice(sliceid);
+		if(details != null) {
+			allPortsInfos = new ArrayList<ArrayList<String>>();
+			for(ArrayList<Object> sliceInfos : details){
+				ArrayList<String> feildsValues = new ArrayList<String>();
+				feildsValues.add((String)sliceInfos.get(2)); // PortID
+				feildsValues.add((String)sliceInfos.get(1)); // DpID
+				feildsValues.add((String)sliceInfos.get(3)); // PortName
+				feildsValues.add((String)sliceInfos.get(4)); // vlanId
+				feildsValues.add((String)sliceInfos.get(6)); // Desc
+				feildsValues.add((String)sliceInfos.get(7)); // State
+				allPortsInfos.add(feildsValues);
+			}
+		}
+		else{
+			return null;
+		}
+		
+		return allPortsInfos;
 	}
 	
 	/* Method to get port details by Id  */

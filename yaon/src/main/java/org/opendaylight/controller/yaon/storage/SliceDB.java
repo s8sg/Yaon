@@ -107,7 +107,7 @@ public class SliceDB{
 
 	/*** Agent table methods ***/
 
-	/* to get agent table from tables */
+	/* To get agent table from tables */
 	private AgentTable getAgentTable(){
 		return (AgentTable)tables.get(agentTableName);
 	}
@@ -140,6 +140,7 @@ public class SliceDB{
 		return ret;
 	}
 	
+	/* Get Agent details */
 	public ArrayList<ArrayList<Object>> getAgent(String dpId){
 		
 		logger.info("Finding Agent from slice Db for dpId : {}", dpId);
@@ -198,12 +199,13 @@ public class SliceDB{
 		return true;
 	}
 	
-	/* Multicast table methods */
+	/*** Multicast table methods ***/
 	
 	private MulticastTable getMulticastTable(){
 		return (MulticastTable)tables.get(multicastTableName);
 	}
 	
+	/* Add multicast details to multicast table */
 	public boolean addMulticast(String sliceId, String multicast){
 		
 		logger.info("Adding Multicast to slice Db for sliceId : {} and multicast: {}", sliceId, multicast);
@@ -229,6 +231,7 @@ public class SliceDB{
 		return true;
 	}
 	
+	/* Get multicast details from multicast table */
 	public ArrayList<ArrayList<Object>> getMulticast(String sliceId){
 		
 		logger.info("Finding Multicast from slice Db for sliceId : {}", sliceId);
@@ -258,6 +261,7 @@ public class SliceDB{
 		return result;
 	}
 	
+	/* Update multicast details into multicast table */
 	public boolean updateMulticast(String sliceId, String multicast){
 		
 		logger.info("Updating Multicast to slice Db for sliceId : {} and multicast: {}", sliceId, multicast);
@@ -288,12 +292,13 @@ public class SliceDB{
 	}
 	
 	
-	/* MAC table methods */
+	/*** MAC table methods ***/
 	
 	private MacTable getMacTable(){
 		return (MacTable)tables.get(macTableName);
 	}
 
+	/* Interface to getAllMacs details */ 
 	public ArrayList<ArrayList<Object>> getMacs(String sliceId, String portId){
 		
 		logger.info("Finding Macs from slice Db for sliceId : {} and portId: {}", sliceId, portId);
@@ -326,6 +331,7 @@ public class SliceDB{
 		return macs;
 	}
 	
+	/* Add mac details to MacTable */
 	public boolean addMac(String sliceId, String portId, String mac){
 		
 		logger.info("Adding Mac to slice Db for sliceId : {} portId: {} and Mac: {}", sliceId, portId, mac);
@@ -353,7 +359,7 @@ public class SliceDB{
 		return true;
 	}
 	
-	/* Method to set mac states   */
+	/* Method to set mac state   */
 	public boolean setMacStates(String sliceId, String portId, String mac, String state){
 
 		logger.info("Setting Mac State to slice Db for sliceId : {} portId: {} Mac: {} ans state: {}", sliceId, portId, mac, state);
@@ -421,6 +427,34 @@ public class SliceDB{
 		return (SliceTable)tables.get(sliceTableName);
 	}
 
+	
+	/* Method to get all slices */
+	public ArrayList<ArrayList<Object>> getAllSlices(){
+		
+		ArrayList<ArrayList<Object>> slices = null;
+		
+		/* Get slice table */
+		SliceTable sliceTable = getsliceTable();
+		if(sliceTable == null){
+			logger.error("slice table is not initialized !");
+			return null;
+		}
+		
+		/* get all slices from slice table */
+		try {
+			slices = sliceTable.findAll();
+			if(slices == null) {
+				logger.info("Data could not be found in Slice table!");
+			}
+		}
+		catch(Exception e){
+			logger.error("Exception while getting details feom Slice table !" + e);
+			return null;
+		}
+		
+		return slices;
+	}
+	
 	/* Method to get slice   */
 	public ArrayList<ArrayList<Object>> getSlice(String sliceId) {
 		
@@ -448,6 +482,7 @@ public class SliceDB{
 			logger.error("Exception while getting details feom Slice table !" + e);
 			return null;
 		}
+		
 		return slice;
 	}
 

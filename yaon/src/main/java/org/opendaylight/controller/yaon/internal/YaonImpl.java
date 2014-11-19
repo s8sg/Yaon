@@ -569,20 +569,46 @@ public class YaonImpl implements IYaonService, IInventoryListener, IListenDataPa
 	@Override
 	public ArrayList<ArrayList<String>> getSlicesInfo() {
 		
-		return null;
+		ArrayList<ArrayList<String>> slicesInfo = null;
+		
+		if(sliceManager != null) {
+			slicesInfo = sliceManager.getAllSlices();
+		}
+		else {
+			logger.error("Slice manager is not initialized !");
+		}
+		
+		return slicesInfo;
 	}
 
 	@Override
 	public ArrayList<ArrayList<String>> getPortsInfo(String sliceId) {
 		
-		return null;
+		ArrayList<ArrayList<String>> portsInfo = null;
+		
+		if(sliceManager != null) {
+			portsInfo = sliceManager.getAllPorts(sliceId);
+		}
+		else {
+			logger.error("Slice manager is not initialized !");
+		}
+		
+		return portsInfo;
 	}
 
 	@Override
-	public ArrayList<ArrayList<String>> getMacsInfo(String sliceId,
-			String portId) {
+	public ArrayList<ArrayList<String>> getMacsInfo(String sliceId, String portId) {
 		
-		return null;
+        ArrayList<ArrayList<String>> macsInfo = null;
+		
+		if(sliceManager != null) {
+			macsInfo = sliceManager.getAllMacs(sliceId, portId);
+		}
+		else {
+			logger.error("Slice manager is not initialized !");
+		}
+		
+		return macsInfo;
 	}
 
 }
