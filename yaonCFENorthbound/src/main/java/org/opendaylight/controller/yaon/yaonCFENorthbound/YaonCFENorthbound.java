@@ -5,9 +5,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import org.codehaus.enunciate.jaxrs.ResponseCode;
 import org.codehaus.enunciate.jaxrs.StatusCodes;
 import org.opendaylight.controller.yaon.yaonCFE.YaonCFEApi;
@@ -17,6 +20,21 @@ import org.json.simple.JSONObject;
 import org.opendaylight.controller.yaon.yaonCFENorthbound.JsonParsing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
+import java.io.StringWriter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.OutputKeys;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 @Path("/")
 public class YaonCFENorthbound {
@@ -298,6 +316,189 @@ public class YaonCFENorthbound {
   	}
 
 
+    /*Method that receive client rest-api call for Slice information */
+
+    @Path("/GetInfo/Slice")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
+
+    public Response getSlice(InputStream incomingData) {
+
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        String output=null;
+        
+		/* call YaonCFEApi */
+        ArrayList<ArrayList<String>> ret;
+        ret=yaonCFEApi.getSlicesInfo();
+        try {
+         	
+    		
+    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
+    		Document doc = docBuilder.newDocument();		
+    		Element rootElement = doc.createElement("SliceInfo");
+    		doc.appendChild(rootElement);
+    		for(int i=0;i<=ret.size();i++){
+    			
+    			Element slice = doc.createElement("slice");
+    			rootElement.appendChild(slice);
+    			
+     			Element first = doc.createElement("slice-id");
+     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
+     			slice.appendChild(first);
+     
+     			Element second = doc.createElement("description");
+     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
+     			slice.appendChild(second);
+     	
+    		}
+    	    
+     		StringWriter stw = new StringWriter(); 
+     		transformer.transform(new DOMSource(doc), new StreamResult(stw)); 
+    		output = stw.getBuffer().toString();
+    	 
+    	  } catch (ParserConfigurationException pce) {
+    		pce.printStackTrace();
+    	  } catch (TransformerException tfe) {
+    		tfe.printStackTrace();
+    	  }
+        
+        if(output==null){
+        	
+        	return Response.ok(new String("Failed To Generate XML !")).build();
+        }
+		
+		return Response.ok(output).build();
+	}
+    
+    /*Method that receive client rest-api call for Port information */
+
+    @Path("/GetInfo/{sliceId}/Port")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
+
+    public Response getPort(InputStream incomingData,@PathParam(value = "sliceId") String sliceId) {
+
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        String output=null;
+        
+		/* call YaonCFEApi */
+        ArrayList<ArrayList<String>> ret;
+        ret=yaonCFEApi.getPortsInfo(sliceId);
+        try {
+         	
+    		
+    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
+    		Document doc = docBuilder.newDocument();		
+    		Element rootElement = doc.createElement("PortInfo");
+    		doc.appendChild(rootElement);
+    		for(int i=0;i<=ret.size();i++){
+    			
+    			Element port = doc.createElement("port");
+    			rootElement.appendChild(port);
+    			
+     			Element first = doc.createElement("port-id");
+     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
+     			port.appendChild(first);
+     
+     			Element second = doc.createElement("dpId");
+     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
+     			port.appendChild(second);
+     			
+     			Element third = doc.createElement("portname");
+     			third.appendChild(doc.createTextNode(ret.get(i).get(2)));
+     			port.appendChild(third);
+     	
+    		}
+    	    
+     		StringWriter stw = new StringWriter(); 
+     		transformer.transform(new DOMSource(doc), new StreamResult(stw)); 
+    		output = stw.getBuffer().toString();
+    	 
+    	  } catch (ParserConfigurationException pce) {
+    		pce.printStackTrace();
+    	  } catch (TransformerException tfe) {
+    		tfe.printStackTrace();
+    	  }
+        
+        if(output==null){
+        	
+        	return Response.ok(new String("Failed To Generate XML !")).build();
+        }
+		
+		return Response.ok(output).build();
+	}
+    
+    /*Method that receive client rest-api call for MAC information */
+
+    @Path("/GetInfo/{sliceId}/{portId}/MAC")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
+
+    public Response getMAC(InputStream incomingData,@PathParam(value = "sliceId") String sliceId,@PathParam(value = "portId") String portId) {
+
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        String output=null;
+        
+		/* call YaonCFEApi */
+        ArrayList<ArrayList<String>> ret;
+        ret=yaonCFEApi.getMacsInfo(sliceId, portId);
+        try {
+         	
+    		
+    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
+    		Document doc = docBuilder.newDocument();		
+    		Element rootElement = doc.createElement("MacInfo");
+    		doc.appendChild(rootElement);
+    		for(int i=0;i<=ret.size();i++){
+    			
+    			Element port = doc.createElement("mac");
+    			rootElement.appendChild(port);
+    			
+     			Element first = doc.createElement("address");
+     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
+     			port.appendChild(first);
+     
+     			Element second = doc.createElement("state");
+     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
+     			port.appendChild(second);
+     			
+    		}
+    	    
+     		StringWriter stw = new StringWriter(); 
+     		transformer.transform(new DOMSource(doc), new StreamResult(stw)); 
+    		output = stw.getBuffer().toString();
+    	 
+    	  } catch (ParserConfigurationException pce) {
+    		pce.printStackTrace();
+    	  } catch (TransformerException tfe) {
+    		tfe.printStackTrace();
+    	  }
+        
+        if(output==null){
+        	
+        	return Response.ok(new String("Failed To Generate XML !")).build();
+        }
+		
+		return Response.ok(output).build();
+	}
 
   	/*Method that recieve client restapi call for delete slice  */
 

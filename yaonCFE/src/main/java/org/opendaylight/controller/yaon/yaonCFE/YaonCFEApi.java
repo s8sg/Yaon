@@ -1,5 +1,7 @@
 package org.opendaylight.controller.yaon.yaonCFE;
 
+import java.util.ArrayList;
+
 public interface YaonCFEApi {
 
 
@@ -26,5 +28,14 @@ public interface YaonCFEApi {
 
 	/* Interface to Register an Multicast for a Specific Slice */
 	public boolean registerMulticast(String sliceId, String multicast);
+	
+	/* Interface to get all slices info */
+	public ArrayList<ArrayList<String>> getSlicesInfo();
+	
+	/* Interface to get all ports info */
+	public ArrayList<ArrayList<String>> getPortsInfo(String sliceId);
+	
+	/* Interface to get all macs info */
+	public ArrayList<ArrayList<String>> getMacsInfo(String sliceId, String portId);
 
 }

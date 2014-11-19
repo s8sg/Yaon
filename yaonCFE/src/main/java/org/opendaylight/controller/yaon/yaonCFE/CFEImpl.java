@@ -1,5 +1,7 @@
 package org.opendaylight.controller.yaon.yaonCFE;
 
+import java.util.ArrayList;
+
 import org.opendaylight.controller.yaon.IYaonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,6 +116,28 @@ public class CFEImpl implements YaonCFEApi{
 		Boolean ret=false;
 		logger.info("CFE register mulicast call");
 		ret = yaonService.registerMulticast(sliceId,multicast);
+		return ret;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getSlicesInfo() {
+		ArrayList<ArrayList<String>> ret;
+		ret=yaonService.getSlicesInfo();
+		return ret;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getPortsInfo(String sliceId) {
+		ArrayList<ArrayList<String>> ret;
+		ret=yaonService.getPortsInfo(sliceId);
+		return ret;
+	}
+
+	@Override
+	public ArrayList<ArrayList<String>> getMacsInfo(String sliceId,
+			String portId) {
+		ArrayList<ArrayList<String>> ret;
+		ret=yaonService.getMacsInfo(sliceId, portId);
 		return ret;
 	}
 }
