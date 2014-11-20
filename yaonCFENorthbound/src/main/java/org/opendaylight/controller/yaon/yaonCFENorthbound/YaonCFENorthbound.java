@@ -331,8 +331,8 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> ret;
-        ret=yaonCFEApi.getSlicesInfo();
+        ArrayList<ArrayList<String>> allDetails;
+        allDetails=yaonCFEApi.getSlicesInfo();
         try {
          	
     		
@@ -343,19 +343,20 @@ public class YaonCFENorthbound {
     		Document doc = docBuilder.newDocument();		
     		Element rootElement = doc.createElement("SliceInfo");
     		doc.appendChild(rootElement);
-    		for(int i=0;i<=ret.size();i++){
+    		if(allDetails!=null){
+    			for(ArrayList<String> details:allDetails){
     			
-    			Element slice = doc.createElement("slice");
-    			rootElement.appendChild(slice);
+    				Element slice = doc.createElement("slice");
+    				rootElement.appendChild(slice);
     			
-     			Element first = doc.createElement("slice-id");
-     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
-     			slice.appendChild(first);
+    				Element first = doc.createElement("sliceId");
+    				first.appendChild(doc.createTextNode(details.get(0)));
+    				slice.appendChild(first);
      
-     			Element second = doc.createElement("description");
-     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
-     			slice.appendChild(second);
-     	
+    				Element second = doc.createElement("description");
+    				second.appendChild(doc.createTextNode(details.get(0)));
+    				slice.appendChild(second);
+    			}
     		}
     	    
      		StringWriter stw = new StringWriter(); 
@@ -391,8 +392,8 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> ret;
-        ret=yaonCFEApi.getPortsInfo(sliceId);
+        ArrayList<ArrayList<String>> allDetails;
+        allDetails=yaonCFEApi.getPortsInfo(sliceId);
         try {
          	
     		
@@ -403,22 +404,36 @@ public class YaonCFENorthbound {
     		Document doc = docBuilder.newDocument();		
     		Element rootElement = doc.createElement("PortInfo");
     		doc.appendChild(rootElement);
-    		for(int i=0;i<=ret.size();i++){
+    		if(allDetails!=null){
+    			for(ArrayList<String> details:allDetails){
     			
-    			Element port = doc.createElement("port");
-    			rootElement.appendChild(port);
+    				Element port = doc.createElement("port");
+    				rootElement.appendChild(port);
     			
-     			Element first = doc.createElement("port-id");
-     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
-     			port.appendChild(first);
+    				Element first = doc.createElement("portId");
+    				first.appendChild(doc.createTextNode(details.get(0)));
+    				port.appendChild(first);
      
-     			Element second = doc.createElement("dpId");
-     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
-     			port.appendChild(second);
+    				Element second = doc.createElement("dpId");
+    				second.appendChild(doc.createTextNode(details.get(1)));
+    				port.appendChild(second);
      			
-     			Element third = doc.createElement("portname");
-     			third.appendChild(doc.createTextNode(ret.get(i).get(2)));
-     			port.appendChild(third);
+    				Element third = doc.createElement("portname");
+    				third.appendChild(doc.createTextNode(details.get(2)));
+    				port.appendChild(third);
+    				
+    				Element fourth = doc.createElement("vlanId");
+    				fourth.appendChild(doc.createTextNode(details.get(3)));
+    				port.appendChild(fourth);
+    				
+    				Element fiveth = doc.createElement("description");
+    				fiveth.appendChild(doc.createTextNode(details.get(4)));
+    				port.appendChild(fiveth);
+    				
+    				Element sixth = doc.createElement("state");
+    				sixth.appendChild(doc.createTextNode(details.get(5)));
+    				port.appendChild(sixth);
+    			}
      	
     		}
     	    
@@ -455,8 +470,8 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> ret;
-        ret=yaonCFEApi.getMacsInfo(sliceId, portId);
+        ArrayList<ArrayList<String>> allDetails;
+        allDetails=yaonCFEApi.getMacsInfo(sliceId, portId);
         try {
          	
     		
@@ -467,18 +482,20 @@ public class YaonCFENorthbound {
     		Document doc = docBuilder.newDocument();		
     		Element rootElement = doc.createElement("MacInfo");
     		doc.appendChild(rootElement);
-    		for(int i=0;i<=ret.size();i++){
+    		if(allDetails!=null){
+    			for(ArrayList<String> details:allDetails){
     			
-    			Element port = doc.createElement("mac");
-    			rootElement.appendChild(port);
+    				Element port = doc.createElement("mac");
+    				rootElement.appendChild(port);
     			
-     			Element first = doc.createElement("address");
-     			first.appendChild(doc.createTextNode(ret.get(i).get(0)));
-     			port.appendChild(first);
+    				Element first = doc.createElement("address");
+    				first.appendChild(doc.createTextNode(details.get(0)));
+    				port.appendChild(first);
      
-     			Element second = doc.createElement("state");
-     			second.appendChild(doc.createTextNode(ret.get(i).get(1)));
-     			port.appendChild(second);
+    				Element second = doc.createElement("state");
+    				second.appendChild(doc.createTextNode(details.get(1)));
+    				port.appendChild(second);
+    			}
      			
     		}
     	    
