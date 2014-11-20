@@ -42,7 +42,7 @@ public class YaonCFENorthbound {
 	private static final Logger logger = LoggerFactory
        		.getLogger(YaonCFENorthbound.class);
 
-	/*Method that receive client rest-api call for register agent  */
+	/*Method that receive client rest api call for register agent  */
     @Path("/agents/{dpId}")
     @POST
     @StatusCodes({
@@ -99,7 +99,7 @@ public class YaonCFENorthbound {
 
 
 
-  	/*Method that receive client rest-api call for register multicast  */
+  	/*Method that receive client rest api call for register multicast  */
  	@Path("/{sliceId}/Multicast")
     @POST
     @StatusCodes({
@@ -150,7 +150,7 @@ public class YaonCFENorthbound {
 
 
 
-  	/*Method that receive client rest-api call for add slice  */
+  	/*Method that receive client rest api call for add slice  */
 
     @Path("/Slice")
     @POST
@@ -205,7 +205,7 @@ public class YaonCFENorthbound {
 
 
 
-    /*Method that receive client rest-api call for add ports  */
+    /*Method that receive client rest api call for add ports  */
 
     @Path("/{sliceId}/Ports")
     @POST
@@ -266,7 +266,7 @@ public class YaonCFENorthbound {
 
 
 
-    /*Method that recieve client restapi call for add mac  */
+    /*Method that receive client rest api call for add mac  */
 
     @Path("/{sliceId}/Ports/{portId}/MAC")
     @POST
@@ -316,7 +316,7 @@ public class YaonCFENorthbound {
   	}
 
 
-    /*Method that receive client rest-api call for Slice information */
+    /*Method that receive client rest api call for Slice information */
 
     @Path("/GetInfo/Slice")
     @POST
@@ -331,7 +331,7 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> allDetails;
+        ArrayList<ArrayList<String>> allDetails=null;
         allDetails=yaonCFEApi.getSlicesInfo();
         try {
          	
@@ -377,7 +377,7 @@ public class YaonCFENorthbound {
 		return Response.ok(output).build();
 	}
     
-    /*Method that receive client rest-api call for Port information */
+    /*Method that receive client rest api call for Port information */
 
     @Path("/GetInfo/{sliceId}/Port")
     @POST
@@ -392,7 +392,7 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> allDetails;
+        ArrayList<ArrayList<String>> allDetails=null;
         allDetails=yaonCFEApi.getPortsInfo(sliceId);
         try {
          	
@@ -455,7 +455,7 @@ public class YaonCFENorthbound {
 		return Response.ok(output).build();
 	}
     
-    /*Method that receive client rest-api call for MAC information */
+    /*Method that receive client rest api call for MAC information */
 
     @Path("/GetInfo/{sliceId}/{portId}/MAC")
     @POST
@@ -470,7 +470,7 @@ public class YaonCFENorthbound {
         String output=null;
         
 		/* call YaonCFEApi */
-        ArrayList<ArrayList<String>> allDetails;
+        ArrayList<ArrayList<String>> allDetails=null;
         allDetails=yaonCFEApi.getMacsInfo(sliceId, portId);
         try {
          	
@@ -517,7 +517,7 @@ public class YaonCFENorthbound {
 		return Response.ok(output).build();
 	}
 
-  	/*Method that recieve client restapi call for delete slice  */
+  	/*Method that receive client rest api call for delete slice  */
 
     @Path("/{sliceId}")
     @DELETE
@@ -548,7 +548,7 @@ public class YaonCFENorthbound {
 
 
 
-   	/*Method that recieve client restapi call for delete ports  */
+   	/*Method that receive client rest api call for delete ports  */
 
     @Path("/{sliceId}/Ports/{portId}")
     @DELETE
@@ -579,7 +579,7 @@ public class YaonCFENorthbound {
 
 
   
-  	/*Method that recieve client restapi call for delete mac  */
+  	/*Method that receive client rest api call for delete mac  */
   
     @Path("/{sliceId}/Ports/{portId}/MAC/{MAC}")
     @DELETE
