@@ -354,7 +354,7 @@ public class YaonCFENorthbound {
     				slice.appendChild(first);
      
     				Element second = doc.createElement("description");
-    				second.appendChild(doc.createTextNode(details.get(0)));
+    				second.appendChild(doc.createTextNode(details.get(1)));
     				slice.appendChild(second);
     			}
     		}
@@ -485,16 +485,16 @@ public class YaonCFENorthbound {
     		if(allDetails!=null){
     			for(ArrayList<String> details:allDetails){
     			
-    				Element port = doc.createElement("mac");
-    				rootElement.appendChild(port);
+    				Element mac = doc.createElement("mac");
+    				rootElement.appendChild(mac);
     			
-    				Element first = doc.createElement("address");
+    				Element first = doc.createElement("MACaddress");
     				first.appendChild(doc.createTextNode(details.get(0)));
-    				port.appendChild(first);
+    				mac.appendChild(first);
      
     				Element second = doc.createElement("state");
     				second.appendChild(doc.createTextNode(details.get(1)));
-    				port.appendChild(second);
+    				mac.appendChild(second);
     			}
      			
     		}
@@ -517,6 +517,120 @@ public class YaonCFENorthbound {
 		return Response.ok(output).build();
 	}
 
+    /*Method that receive client rest api call for whole network information */
+
+    @Path("/GetInfo")
+    @POST
+    @StatusCodes({
+        @ResponseCode(code = 200, condition = "Destination reachable"),
+        @ResponseCode(code = 503, condition = "Internal error"),
+        @ResponseCode(code = 503, condition = "Destination unreachable") })
+
+    public Response getAll(InputStream incomingData) {
+
+        YaonCFEApi yaonCFEApi = (YaonCFEApi) ServiceHelper.getGlobalInstance(YaonCFEApi.class, this);
+        String output=null;
+        
+		/* call YaonCFEApi */
+        ArrayList<ArrayList<String>> allSlice=null;
+        ArrayList<ArrayList<String>> allPorts=null;
+        ArrayList<ArrayList<String>> allMac=null;
+        allSlice=yaonCFEApi.getSlicesInfo();
+        try {
+         	
+    		
+    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+    		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+    		Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
+    		Document doc = docBuilder.newDocument();		
+    		Element rootElement = doc.createElement("Info");
+    		doc.appendChild(rootElement);
+    		if(allSlice!=null){
+    			for(ArrayList<String> sliceDetails:allSlice){
+    			
+    				Element slice = doc.createElement("slice");
+    				rootElement.appendChild(slice);
+    			
+    				Element first = doc.createElement("sliceId");
+    				first.appendChild(doc.createTextNode(sliceDetails.get(0)));
+    				slice.appendChild(first);
+     
+    				Element second = doc.createElement("description");
+    				second.appendChild(doc.createTextNode(sliceDetails.get(1)));
+    				slice.appendChild(second);
+    				
+    				allPorts=yaonCFEApi.getPortsInfo(sliceDetails.get(0));
+    				
+    				if(allPorts!=null){
+    					for(ArrayList<String> portDetails:allPorts){
+    						
+    						Element port = doc.createElement("port");
+    	    				rootElement.appendChild(port);
+    	    			
+    	    				Element firstP = doc.createElement("portId");
+    	    				firstP.appendChild(doc.createTextNode(portDetails.get(0)));
+    	    				port.appendChild(firstP);
+    	     
+    	    				Element secondP = doc.createElement("dpId");
+    	    				secondP.appendChild(doc.createTextNode(portDetails.get(1)));
+    	    				port.appendChild(secondP);
+    	     			
+    	    				Element thirdP = doc.createElement("portname");
+    	    				thirdP.appendChild(doc.createTextNode(portDetails.get(2)));
+    	    				port.appendChild(thirdP);
+    	    				
+    	    				Element fourthP = doc.createElement("vlanId");
+    	    				fourthP.appendChild(doc.createTextNode(portDetails.get(3)));
+    	    				port.appendChild(fourthP);
+    	    				
+    	    				Element fivethP = doc.createElement("description");
+    	    				fivethP.appendChild(doc.createTextNode(portDetails.get(4)));
+    	    				port.appendChild(fivethP);
+    	    				
+    	    				Element sixthP = doc.createElement("state");
+    	    				sixthP.appendChild(doc.createTextNode(portDetails.get(5)));
+    	    				port.appendChild(sixthP);
+    	    				
+    	    				allMac=yaonCFEApi.getMacsInfo(sliceDetails.get(0), portDetails.get(0));
+    	    				if(allMac!=null){
+    	    	    			for(ArrayList<String> macDetails:allMac){
+    	    	    			
+    	    	    				Element mac = doc.createElement("mac");
+    	    	    				rootElement.appendChild(mac);
+    	    	    			
+    	    	    				Element firstM = doc.createElement("MACaddress");
+    	    	    				firstM.appendChild(doc.createTextNode(macDetails.get(0)));
+    	    	    				mac.appendChild(firstM);
+    	    	     
+    	    	    				Element secondM = doc.createElement("state");
+    	    	    				secondM.appendChild(doc.createTextNode(macDetails.get(1)));
+    	    	    				mac.appendChild(secondM);
+    	    	    			}	
+    	    	    		}	
+    					}
+    				}	
+    			}
+    		}
+    	    
+     		StringWriter stw = new StringWriter(); 
+     		transformer.transform(new DOMSource(doc), new StreamResult(stw)); 
+    		output = stw.getBuffer().toString();
+    	 
+    	  } catch (ParserConfigurationException pce) {
+    		pce.printStackTrace();
+    	  } catch (TransformerException tfe) {
+    		tfe.printStackTrace();
+    	  }
+        
+        if(output==null){
+        	
+        	return Response.ok(new String("Failed To Generate XML !")).build();
+        }
+		
+		return Response.ok(output).build();
+	}
+    
   	/*Method that receive client rest api call for delete slice  */
 
     @Path("/{sliceId}")
