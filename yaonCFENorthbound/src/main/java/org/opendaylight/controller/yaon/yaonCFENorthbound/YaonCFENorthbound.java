@@ -624,7 +624,7 @@ public class YaonCFENorthbound {
 			
 			Element fivethP12 = doc.createElement("description");
 			fivethP12.appendChild(doc.createTextNode("port2"));
-			port11.appendChild(fivethP12);
+			port12.appendChild(fivethP12);
 			
 			Element sixthP12 = doc.createElement("state");
 			sixthP12.appendChild(doc.createTextNode("true"));
