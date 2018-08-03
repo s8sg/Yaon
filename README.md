@@ -10,7 +10,7 @@ It Uses OpenDaylight as OpenFlow Controller in place of Trema and deployed as a 
 
 #####System architecture
 
-![](https://github.com/cosanti/YAONonOpendaylight/blob/master/Doc/YAON_Architecture.png)
+![](https://github.com/s8sg/Yaon/blob/master/Doc/ODL%20architecture.jpg)
 
 Yaon is plugin for opendaylight rather than an application. Yaon uses others services from opendaylight plugins internally for managing overlay network, and also expose services for managing overlay networks. It also provides a north bound RESTful API using opendaylight REST implementation. It could be called as a Northbound Plugin for Opendaylight to create and manage Overlay networks.
 
@@ -31,4 +31,4 @@ Internally Yaon plugin has different sub components according to their functiona
 
 **6>	Agent Manager:** Manages agents calls
 
-![](https://github.com/cosanti/Yaon/blob/master/Doc/YAON%20arcitecture.jpg)
+![](https://github.com/s8sg/Yaon/blob/master/Doc/YAON%20arcitecture.jpg)
